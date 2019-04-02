@@ -11,4 +11,4 @@ Work
 2.  Create `Pull Request` to `Branch: master`
 3.  Add label `WIP`
 4.  After work finish change label to `Ready to merge`
-5.  Wait until someone check it and merge
+5.  Wait until someone check it and `merge`
