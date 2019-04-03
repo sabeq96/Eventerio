@@ -2,6 +2,8 @@ import { h, Component } from 'preact';
 import { List, ListHeader, ListItem, Icon, Link, Button } from 'preact-fluid';
 import { route } from 'preact-router';
 
+import beforeInstallPrompt from '../../utils/beforeInstallPrompt';
+
 import './style';
 
 const links = [{
@@ -68,26 +70,14 @@ class Nav extends Component {
 		super(props);
 
 		this.state = {
-			showInstallButton: false
+			showInstallButton: true
 		};
 
 		this.defferedPrompt;
 	}
 
 	componentDidMount = () => {
-		window.addEventListener('beforeinstallprompt', (e) => {
-			this.setState({ showInstallButton: true });
-			// Prevent Chrome 67 and earlier from automatically showing the prompt
-			e.preventDefault();
-			// Stash the event so it can be triggered later.
-			this.deferredPrompt = e;
-			this.deferredPrompt.userChoice
-				.then((choiceResult) => {
-					if (choiceResult.outcome === 'accepted') {
-						this.setState({ showInstallButton: false });
-					}
-				});
-		});
+		beforeInstallPrompt(this);
 	}
 
 	render({ closeSidenav }, { showInstallButton }) {
@@ -114,9 +104,9 @@ class Nav extends Component {
 						</Link>
 					</ListItem>
 				))}
-				<ListItem style={styles.installButton}>
+				<div style={styles.installButton}>
 					<InstallButton showButton={showInstallButton} onClick={this.promptInstallApp} />
-				</ListItem>
+				</div>
 			</List>
 		);
 	}
@@ -140,7 +130,8 @@ const styles = {
 	installButton: {
 		position: 'absolute',
 		width: '160px',
-		bottom: '10px'
+		bottom: '10px',
+		marginLeft: '20px'
 	}
 };
 
