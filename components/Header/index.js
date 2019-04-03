@@ -8,22 +8,14 @@ const RightSection = ({ isLogged, onClick }) => (
 	</Button>
 );
 
-const InstallButton = ({ showButton, onClick }) => (
-	showButton && (
-		<Button
-			secondary
-			onClick={onClick}
-			style={{ marginRight: '20px' }}
-			right={
-				<Icon
-					name="download"
-					size="xsmall"
-				/>
-			}
-		>
-			Install App
-		</Button>
-	)
+const TitleSection = ({ openSidenav }) => (
+	<div onClick={openSidenav}>
+		<Icon
+			name="bars"
+			size="small"
+		/>
+		<span style={styles.title}>Eventerio</span>
+	</div>
 );
 	
 class Header extends Component {
@@ -41,63 +33,40 @@ class Header extends Component {
 		this.setState({ logged: true });
 	}
 
-	promptInstallApp = () => {
-		this.deferredPrompt.prompt();
-		this.deferredPrompt.userChoice
-			.then((choiceResult) => {
-				if (choiceResult.outcome === 'accepted') {
-					this.setState({ showInstallButton: false });
-				}
-			});
-	}
-
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			logged: false,
-			showInstallButton: false
+			logged: false
 		};
 
-		this.defferedPrompt;
 		this.modal;
 	}
 
-	componentDidMount = () => {
-		window.addEventListener('beforeinstallprompt', (e) => {
-			this.setState({ showInstallButton: true });
-			// Prevent Chrome 67 and earlier from automatically showing the prompt
-			e.preventDefault();
-			// Stash the event so it can be triggered later.
-			this.deferredPrompt = e;
-			this.deferredPrompt.userChoice
-				.then((choiceResult) => {
-					if (choiceResult.outcome === 'accepted') {
-						this.setState({ showInstallButton: false });
-					}
-				});
-		});
-	}
-
-	render(props, { logged, showInstallButton }) {
+	render({ openSidenav, ...props }, { logged, showInstallButton }) {
 		return (
 			<div>
 				<AppBar
 					primary
-					title="Eventerio"
-					titleStyle={{ color: 'white', fontSize: '24px', marginLeft: '20px' }}
-					rightSection={[
-						<InstallButton showButton={showInstallButton} onClick={this.promptInstallApp} />,
+					leftSection={<TitleSection openSidenav={openSidenav} />}
+					rightSection={
 						<RightSection
 							isLogged={logged}
 							onClick={logged ? this.handleLogoutButtonClick : this.handleLoginButtonClick}
 						/>
-					]}
+					}
 				/>
 				<Modal ref={modal => this.modal = modal} />
 			</div>
 		);
 	}
 }
+
+const styles = {
+	title: {
+		fontSize: '24px',
+		marginLeft: '10px'
+	}
+};
 
 export default Header;

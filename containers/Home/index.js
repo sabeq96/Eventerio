@@ -7,7 +7,7 @@ class Home extends Component {
 		this.state = {};
 	}
 
-	render() {
+	render(props, state) {
 		return (
 			<div>
         Home Page
