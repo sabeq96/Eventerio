@@ -8,18 +8,45 @@ import Header from './components/Header';
 import Nav from './components/Nav';
 import Home from './containers/Home';
 
+import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
+
 const theme = {};
 
 class App extends Component {
 	handleRoute = e => {
 		this.currentUrl = e.url;
 	}
+
+	handleAppInstall = () => {
+		promptInstallApp(this);
+	}
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			showInstallButton: false
+		};
+
+		this.defferedPrompt;
+	}
+
+	componentDidMount = () => {
+		beforeInstallListener(this);
+	}
 	//TODO: FIX THEME PROVIDER, CURRENTRY DOES NOT PASS THEME PROP
-	render() {
+	render(props, { showInstallButton }) {
 		return (
 			<ThemeProvider theme={theme}>
 				<div id="app">
-					<Sidebar sidebar={<Nav />}>
+					<Sidebar
+						sidebar={
+							<Nav
+								onInstallAppClick={this.handleAppInstall}
+								showInstallButton={showInstallButton}
+							/>
+						}
+					>
 						<Header />
 					</Sidebar>
 					<Router onChange={this.handleRoute}>

@@ -1,4 +1,4 @@
-export default (_this) => {
+export const beforeInstallListener = (_this) => {
 	window.addEventListener('beforeinstallprompt', (e) => {
 		_this.setState({ showInstallButton: true });
 		// Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -12,4 +12,14 @@ export default (_this) => {
 				}
 			});
 	});
+};
+
+export const promptInstallApp = (_this) => {
+	_this.deferredPrompt.prompt();
+	_this.deferredPrompt.userChoice
+		.then((choiceResult) => {
+			if (choiceResult.outcome === 'accepted') {
+				_this.setState({ showInstallButton: false });
+			}
+		});
 };
