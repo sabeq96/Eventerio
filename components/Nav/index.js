@@ -36,7 +36,6 @@ const InstallButton = ({ showButton, onClick }) => (
 const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton, opened }) => (
 	<OutsideClickHandler onClickOutside={opened && closeSidenav} id="sidebarList">
 		<List style={styles.list}>
-			{console.log({ opened })}
 			<ListHeader
 				custom={
 					<div onclick={closeSidenav} style={styles.header}>

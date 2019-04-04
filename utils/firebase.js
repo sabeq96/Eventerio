@@ -31,10 +31,6 @@ class Firebase {
 	updatePassword = (password) => (
 		this.auth.currentUser.updatePassword(password)
 	)
-
-	test = (email, password) => (
-		console.log({ email, password })
-	)
 }
 
 export default new Firebase();

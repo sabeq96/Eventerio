@@ -1,7 +1,8 @@
 import { State } from 'statty';
 
 let initialState = {
-	userLogged: false
+	userLogged: false,
+	showLoader: false
 };
 
 const reducer = ( state, action ) => {
@@ -16,6 +17,18 @@ const reducer = ( state, action ) => {
 			return {
 				...state,
 				userLogged: false
+			};
+
+		case 'SHOW_LOADER':
+			return {
+				...state,
+				showLoader: action.showLoader
+			};
+
+		case 'SHOW_LOGIN_MODAL':
+			return {
+				...state,
+				showLoginModal: action.showLoginModal
 			};
       
 		default:

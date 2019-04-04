@@ -32,6 +32,7 @@
     "preact-fluid": "^0.9.1",
     "preact-router": "^2.6.1",
     "preact-sidenav": "^0.3.2",
-    "statty": "^2.0.4"
+    "statty": "^2.0.4",
+    "styled-loaders": "^0.3.0"
   }
 }

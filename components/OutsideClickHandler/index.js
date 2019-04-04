@@ -39,8 +39,8 @@ export default class ClickOutside extends Component {
 		const { id, onClickOutside } = this.props;
 		const el = document.getElementById(id);
 
-		if (this.hasCallback(onClickOutside)) { this.addListeners(); }
-		if (!el || !this.hasCallback(onClickOutside)) { this.removeListeners(); }
+		if (this.hasCallback(onClickOutside)) { this.addListeners(); } // Has no callback
+		if (!el || !this.hasCallback(onClickOutside)) { this.removeListeners(); } // element does not exist
 	}
 	
 	componentWillUnmount() { this.removeListeners(); }

@@ -19,10 +19,10 @@ class LoginModal extends Component {
 	}
 
 	hideModal = () => {
-		const { modalRef } = this.props;
+		const { hideLoginModal } = this.props;
 
 		this.setState({ email: '', password: '', error: '' });
-		modalRef.hide();
+		hideLoginModal();
 	}
 
 	constructor(props) {
@@ -37,32 +37,34 @@ class LoginModal extends Component {
 
 	render(props, { email, password, error }) {
 		return (
-			<OutsideClickHandler onClickOutside={this.hideModal} id="loginModal">
-				<Card style={{ maxWidth: 350 }}>
-					<CardHeader title="Log In" />
-					<form>
-						<CardBody>
-							<TextField type="text" label="email" onChange={linkstate(this, 'email')} value={email} />
-							<TextField type="password" label="password" onChange={linkstate(this, 'password')} value={password} style={{ marginTop: '20px' }} />
-							{error && (
-								<div style={styles.error}>
-									{error}
-								</div>
-							)}
-						</CardBody>
-						<CardFooter
-							right={
-								<Button
-									primary
-									onClick={this.onLoginClick}
-								>
-										Log In
-								</Button>
-							}
-						/>
-					</form>
-				</Card>
-			</OutsideClickHandler>
+			<div style={styles.loginModalWrapper}>
+				<OutsideClickHandler onClickOutside={this.hideModal} id="loginModal">
+					<Card style={styles.card}>
+						<CardHeader title="Log In" />
+						<form>
+							<CardBody>
+								<TextField type="text" label="email" onChange={linkstate(this, 'email')} value={email} />
+								<TextField type="password" label="password" onChange={linkstate(this, 'password')} value={password} style={{ marginTop: '20px' }} />
+								{error && (
+									<div style={styles.error}>
+										{error}
+									</div>
+								)}
+							</CardBody>
+							<CardFooter
+								right={
+									<Button
+										primary
+										onClick={this.onLoginClick}
+									>
+											Log In
+									</Button>
+								}
+							/>
+						</form>
+					</Card>
+				</OutsideClickHandler>
+			</div>
 		);
 	}
 }
@@ -71,6 +73,22 @@ const styles = {
 	error: {
 		color: '#F00',
 		textAlign: 'center'
+	},
+	card: {
+		width: '350px'
+	},
+	loginModalWrapper: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		width: '100vw',
+		height: '100vh',
+		overflow: 'hidden',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.8)',
+		zIndex: 100
 	}
 };
 
