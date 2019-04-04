@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { AppBar, Button, Modal, Icon } from 'preact-fluid';
-import LoginModal from './Login';
+import LoginModal from '../Login';
+import { withStore } from '../../utils/store';
 
 const RightSection = ({ isLogged, onClick }) => (
 	<Button secondary onClick={onClick}>
@@ -9,7 +10,7 @@ const RightSection = ({ isLogged, onClick }) => (
 );
 
 const TitleSection = ({ openSidenav }) => (
-	<div onClick={openSidenav}>
+	<div onClick={openSidenav} style={styles.titleWrapper}>
 		<Icon
 			name="bars"
 			size="small"
@@ -21,29 +22,23 @@ const TitleSection = ({ openSidenav }) => (
 class Header extends Component {
 	handleLoginButtonClick = () => {
 		this.modal.show(
-			<LoginModal modalRef={this.modal} onLogin={this.handleLoginClick} />
+			<LoginModal
+				modalRef={this.modal}
+				onLogin={this.handleLogIn}
+			/>
 		);
-	}
-
-	handleLogoutButtonClick = () => {
-		this.setState({ logged: false });
-	}
-
-	handleLoginClick = ({ login, password }) => {
-		this.setState({ logged: true });
 	}
 
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			logged: false
-		};
-
 		this.modal;
+
+		this.handleLogOut = () => props.dispatch({ type: 'LOGOUT' });
+		this.handleLogIn = (data) => props.dispatch({ type: 'LOGIN', ...data });
 	}
 
-	render({ openSidenav, ...props }, { logged, showInstallButton }) {
+	render({ openSidenav, store: { userLogged } }) {
 		return (
 			<div>
 				<AppBar
@@ -51,8 +46,8 @@ class Header extends Component {
 					leftSection={<TitleSection openSidenav={openSidenav} />}
 					rightSection={
 						<RightSection
-							isLogged={logged}
-							onClick={logged ? this.handleLogoutButtonClick : this.handleLoginButtonClick}
+							isLogged={userLogged}
+							onClick={userLogged ? this.handleLogOut : this.handleLoginButtonClick}
 						/>
 					}
 				/>
@@ -66,7 +61,10 @@ const styles = {
 	title: {
 		fontSize: '24px',
 		marginLeft: '10px'
+	},
+	titleWrapper: {
+		cursor: 'pointer'
 	}
 };
 
-export default Header;
+export default withStore(Header);

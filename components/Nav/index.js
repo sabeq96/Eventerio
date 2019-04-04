@@ -1,31 +1,10 @@
-import { h, Component } from 'preact';
+import { h } from 'preact';
 import { List, ListHeader, ListItem, Icon, Link, Button } from 'preact-fluid';
 import { route } from 'preact-router';
 
 import './style';
 
 const links = [{
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
-	name: 'Menu Item',
-	path: '/123'
-}, {
 	name: 'Menu Item',
 	path: '/123'
 }, {
@@ -57,7 +36,7 @@ const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton }) => (
 	<List style={styles.list}>
 		<ListHeader
 			custom={
-				<div onclick={closeSidenav} style={styles.wrapper}>
+				<div onclick={closeSidenav} style={styles.header}>
 					<span style={styles.text}>Close</span>
 					<Icon name="times" size="xsmall" />
 				</div>
@@ -83,9 +62,10 @@ const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton }) => (
 );
 
 const styles = {
-	wrapper: {
+	header: {
 		display: 'flex',
-		alignItems: 'center'
+		alignItems: 'center',
+		cursor: 'pointer'
 	},
 	text: {
 		marginRight: '5px'

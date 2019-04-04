@@ -1,6 +1,7 @@
 import './style';
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
+import { Provider } from 'statty';
 import { ThemeProvider } from 'preact-fluid';
 
 import Sidebar from 'preact-sidenav';
@@ -9,6 +10,7 @@ import Nav from './components/Nav';
 import Home from './containers/Home';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
+import { initialState } from './utils/store';
 
 const theme = {};
 
@@ -37,23 +39,25 @@ class App extends Component {
 	//TODO: FIX THEME PROVIDER, CURRENTRY DOES NOT PASS THEME PROP
 	render(props, { showInstallButton }) {
 		return (
-			<ThemeProvider theme={theme}>
-				<div id="app">
-					<Sidebar
-						sidebar={
-							<Nav
-								onInstallAppClick={this.handleAppInstall}
-								showInstallButton={showInstallButton}
-							/>
-						}
-					>
-						<Header />
-					</Sidebar>
-					<Router onChange={this.handleRoute}>
-						<Home path="/" />
-					</Router>
-				</div>
-			</ThemeProvider>
+			<Provider state={initialState}>
+				<ThemeProvider theme={theme}>
+					<div id="app">
+						<Sidebar
+							sidebar={
+								<Nav
+									onInstallAppClick={this.handleAppInstall}
+									showInstallButton={showInstallButton}
+								/>
+							}
+						>
+							<Header />
+						</Sidebar>
+						<Router onChange={this.handleRoute}>
+							<Home path="/" />
+						</Router>
+					</div>
+				</ThemeProvider>
+			</Provider>
 		);
 	}
 }
