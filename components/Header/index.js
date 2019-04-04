@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { AppBar, Button, Modal, Icon } from 'preact-fluid';
+import { AppBar, Button, Icon } from 'preact-fluid';
 
 import LoginModal from '../Login';
 import Loader from '../Loader';
