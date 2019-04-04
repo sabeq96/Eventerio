@@ -26,7 +26,7 @@ class App extends Component {
 	getNav = () => (
 		<Nav
 			onInstallAppClick={this.handleAppInstall}
-			showInstallButton={this.props.showInstallButton}
+			showInstallButton={this.state.showInstallButton}
 		/>
 	)
 
