@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { AppBar, Button, Modal, Icon } from 'preact-fluid';
 import LoginModal from '../Login';
+import Firebase from '../../utils/firebase';
 import { withStore } from '../../utils/store';
 
 const RightSection = ({ isLogged, onClick }) => (
@@ -20,11 +21,30 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
+	handleLogin = ({ email, password }) => {
+		const { dispatch } = this.props;
+
+		return Firebase.logIn(email, password).then((authUser) => {
+			console.log(authUser);
+
+			dispatch({ type: 'LOGIN', email, password });
+		});
+	}
+
+	handleLogOut = () => {
+		const { dispatch } = this.props;
+
+		return Firebase.logOut().then((authUser) => {
+			console.log(authUser);
+			dispatch({ type: 'LOGOUT' });
+		});
+	}
+	
 	handleLoginButtonClick = () => {
 		this.modal.show(
 			<LoginModal
 				modalRef={this.modal}
-				onLogin={this.handleLogIn}
+				onLogin={this.handleLogin}
 			/>
 		);
 	}
@@ -33,9 +53,6 @@ class Header extends Component {
 		super(props);
 
 		this.modal;
-
-		this.handleLogOut = () => props.dispatch({ type: 'LOGOUT' });
-		this.handleLogIn = (data) => props.dispatch({ type: 'LOGIN', ...data });
 	}
 
 	render({ openSidenav, store: { userLogged } }) {
@@ -51,7 +68,7 @@ class Header extends Component {
 						/>
 					}
 				/>
-				<Modal ref={modal => this.modal = modal} />
+				<Modal ref={modal => this.modal = modal} id="loginModalWrapper" />
 			</div>
 		);
 	}
