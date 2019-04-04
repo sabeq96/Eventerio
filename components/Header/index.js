@@ -24,13 +24,16 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
-	handleLogin = ({ email, password }) => {
+	handleLogin = async ({ email, password }) => {
 		const { dispatch } = this.props;
 
 		dispatch({ type: 'SHOW_LOADER', showLoader: true });
 		return Firebase.logIn(email, password).then(() => {
 			dispatch({ type: 'LOGIN', email, password });
 			dispatch({ type: 'SHOW_LOADER', showLoader: false });
+		}).catch((error) => {
+			dispatch({ type: 'SHOW_LOADER', showLoader: false });
+			return Promise.reject(error);
 		});
 	}
 
