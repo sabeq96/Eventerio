@@ -24,7 +24,7 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
-	handleLogin = async ({ email, password }) => {
+	handleLogin = ({ email, password }) => {
 		const { dispatch } = this.props;
 
 		dispatch({ type: 'SHOW_LOADER', showLoader: true });
