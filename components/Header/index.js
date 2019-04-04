@@ -28,8 +28,7 @@ class Header extends Component {
 		const { dispatch } = this.props;
 
 		dispatch({ type: 'SHOW_LOADER', showLoader: true });
-		return Firebase.logIn(email, password).then((authUser) => {
-			console.log(authUser);
+		return Firebase.logIn(email, password).then(() => {
 			dispatch({ type: 'LOGIN', email, password });
 			dispatch({ type: 'SHOW_LOADER', showLoader: false });
 		});
@@ -38,8 +37,7 @@ class Header extends Component {
 	handleLogOut = () => {
 		const { dispatch } = this.props;
 
-		return Firebase.logOut().then((authUser) => {
-			console.log(authUser);
+		return Firebase.logOut().then(() => {
 			dispatch({ type: 'LOGOUT' });
 		});
 	}
