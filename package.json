@@ -31,7 +31,6 @@
     "preact-fluid": "^0.9.1",
     "preact-router": "^2.6.1",
     "preact-sidenav": "^0.3.2",
-    "statty": "^2.0.4",
-    "unistore": "^3.4.1"
+    "statty": "^2.0.4"
   }
 }
