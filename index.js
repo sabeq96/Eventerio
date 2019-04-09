@@ -23,6 +23,13 @@ class App extends Component {
 		promptInstallApp(this);
 	}
 
+	getNav = () => (
+		<Nav
+			onInstallAppClick={this.handleAppInstall}
+			showInstallButton={this.state.showInstallButton}
+		/>
+	)
+
 	constructor(props) {
 		super(props);
 
@@ -37,19 +44,12 @@ class App extends Component {
 		beforeInstallListener(this);
 	}
 	//TODO: FIX THEME PROVIDER, CURRENTRY DOES NOT PASS THEME PROP
-	render(props, { showInstallButton }) {
+	render() {
 		return (
 			<Provider state={initialState}>
 				<ThemeProvider theme={theme}>
 					<div id="app">
-						<Sidebar
-							sidebar={
-								<Nav
-									onInstallAppClick={this.handleAppInstall}
-									showInstallButton={showInstallButton}
-								/>
-							}
-						>
+						<Sidebar sidebar={this.getNav()}>
 							<Header />
 						</Sidebar>
 						<Router onChange={this.handleRoute}>

@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { List, ListHeader, ListItem, Icon, Link, Button } from 'preact-fluid';
 import { route } from 'preact-router';
+import OutsideClickHandler from '../OutsideClickHandler';
 
 import './style';
 
@@ -32,33 +33,35 @@ const InstallButton = ({ showButton, onClick }) => (
 	)
 );
 
-const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton }) => (
-	<List style={styles.list}>
-		<ListHeader
-			custom={
-				<div onclick={closeSidenav} style={styles.header}>
-					<span style={styles.text}>Close</span>
-					<Icon name="times" size="xsmall" />
-				</div>
-			}
-		/>
-		{links.map((link) => (
-			<ListItem>
-				<Link
-					href={link.path}
-							onClick={() => { // eslint-disable-line
-						route(link.path);
-						closeSidenav();
-					}}
-				>
-					{link.name}
-				</Link>
-			</ListItem>
-		))}
-		<div style={styles.installButton}>
-			<InstallButton showButton={showInstallButton} onClick={onInstallAppClick} />
-		</div>
-	</List>
+const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton, opened }) => (
+	<OutsideClickHandler onClickOutside={opened && closeSidenav} id="sidebarList">
+		<List style={styles.list}>
+			<ListHeader
+				custom={
+					<div onclick={closeSidenav} style={styles.header}>
+						<span style={styles.text}>Close</span>
+						<Icon name="times" size="xsmall" />
+					</div>
+				}
+			/>
+			{links.map((link) => (
+				<ListItem>
+					<Link
+						href={link.path}
+								onClick={() => { // eslint-disable-line
+							route(link.path);
+							closeSidenav();
+						}}
+					>
+						{link.name}
+					</Link>
+				</ListItem>
+			))}
+			<div style={styles.installButton}>
+				<InstallButton showButton={showInstallButton} onClick={onInstallAppClick} />
+			</div>
+		</List>
+	</OutsideClickHandler>
 );
 
 const styles = {

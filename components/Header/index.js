@@ -1,6 +1,10 @@
 import { h, Component } from 'preact';
-import { AppBar, Button, Modal, Icon } from 'preact-fluid';
+import { AppBar, Button, Icon } from 'preact-fluid';
+
 import LoginModal from '../Login';
+import Loader from '../Loader';
+
+import Firebase from '../../utils/firebase';
 import { withStore } from '../../utils/store';
 
 const RightSection = ({ isLogged, onClick }) => (
@@ -20,25 +24,44 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
-	handleLoginButtonClick = () => {
-		this.modal.show(
-			<LoginModal
-				modalRef={this.modal}
-				onLogin={this.handleLogIn}
-			/>
-		);
+	handleLogin = ({ email, password }) => {
+		const { dispatch } = this.props;
+
+		dispatch({ type: 'SHOW_LOADER', showLoader: true });
+		return Firebase.logIn(email, password).then(() => {
+			dispatch({ type: 'LOGIN', email, password });
+		}).catch((error) => (
+			Promise.reject(error)
+		)).finally(() => {
+			dispatch({ type: 'SHOW_LOADER', showLoader: false });
+		});
+	}
+
+	handleLogOut = () => {
+		const { dispatch } = this.props;
+
+		return Firebase.logOut().then(() => {
+			dispatch({ type: 'LOGOUT' });
+		});
+	}
+	
+	showLoginModal = () => {
+		const { dispatch } = this.props;
+		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: true });
+	}
+	
+	hideLoginModal = () => {
+		const { dispatch } = this.props;
+		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
 	}
 
 	constructor(props) {
 		super(props);
 
-		this.modal;
-
-		this.handleLogOut = () => props.dispatch({ type: 'LOGOUT' });
-		this.handleLogIn = (data) => props.dispatch({ type: 'LOGIN', ...data });
+		this.loginModal;
 	}
 
-	render({ openSidenav, store: { userLogged } }) {
+	render({ openSidenav, store: { userLogged, showLoader, showLoginModal } }) {
 		return (
 			<div>
 				<AppBar
@@ -47,11 +70,19 @@ class Header extends Component {
 					rightSection={
 						<RightSection
 							isLogged={userLogged}
-							onClick={userLogged ? this.handleLogOut : this.handleLoginButtonClick}
+							onClick={userLogged ? this.handleLogOut : this.showLoginModal}
 						/>
 					}
 				/>
-				<Modal ref={modal => this.modal = modal} />
+				{showLoginModal && (
+					<LoginModal
+						hideLoginModal={this.hideLoginModal}
+						onLogin={this.handleLogin}
+					/>
+				)}
+				{showLoader && (
+					<Loader />
+				)}
 			</div>
 		);
 	}
