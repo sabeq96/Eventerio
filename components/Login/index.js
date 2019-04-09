@@ -25,12 +25,103 @@ class LoginModal extends Component {
 		hideLoginModal();
 	}
 
+	getContent(contentType) {
+		switch (contentType) {
+			case 'LOGIN' : {
+				const { email, password, error } = this.state;
+				return (
+					<div>
+						<TextField
+							type="text"
+							label="email"
+							onChange={linkstate(this, 'email')}
+							value={email}
+						/>
+						<TextField
+							type="password"
+							label="password"
+							onChange={linkstate(this, 'password')}
+							value={password}
+							style={{ marginTop: '20px' }}
+						/>
+						{error && (
+							<div style={styles.error}>
+								{error}
+							</div>
+						)}
+					</div>
+				);
+			}
+
+			case 'REGISTER' : {
+				const { email, password, confirmPassword, error } = this.state;
+				return (
+					<div>
+						<TextField
+							type="text"
+							label="email"
+							onChange={linkstate(this, 'email')}
+							value={email}
+						/>
+						<TextField
+							type="password"
+							label="password"
+							onChange={linkstate(this, 'password')}
+							value={password}
+							style={{ marginTop: '20px' }}
+						/>
+						<TextField
+							type="password"
+							label="confirm password"
+							onChange={linkstate(this, 'confirmPassword')}
+							value={confirmPassword}
+							style={{ marginTop: '20px' }}
+						/>
+						{error && (
+							<div style={styles.error}>
+								{error}
+							</div>
+						)}
+					</div>
+				);
+			}
+
+			case 'CHANGE_PASSWORD' : {
+				const { password, confirmPassword, error } = this.state;
+				return (
+					<div>
+						<TextField
+							type="password"
+							label="password"
+							onChange={linkstate(this, 'password')}
+							value={password}
+							style={{ marginTop: '20px' }}
+						/>
+						<TextField
+							type="password"
+							label="confirm password"
+							onChange={linkstate(this, 'confirmPassword')}
+							value={confirmPassword}
+							style={{ marginTop: '20px' }}
+						/>
+						{error && (
+							<div style={styles.error}>
+								{error}
+							</div>
+						)}
+					</div>
+				);
+			}
+		}
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			email: '',
 			password: '',
+			confirmPassword: '',
 			error: null
 		};
 	}
@@ -43,13 +134,7 @@ class LoginModal extends Component {
 						<CardHeader title="Log In" />
 						<form>
 							<CardBody>
-								<TextField type="text" label="email" onChange={linkstate(this, 'email')} value={email} />
-								<TextField type="password" label="password" onChange={linkstate(this, 'password')} value={password} style={{ marginTop: '20px' }} />
-								{error && (
-									<div style={styles.error}>
-										{error}
-									</div>
-								)}
+								{ this.getContent('LOGIN') }
 							</CardBody>
 							<CardFooter
 								right={
