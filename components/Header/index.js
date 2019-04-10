@@ -4,7 +4,6 @@ import { AppBar, Button, Icon } from 'preact-fluid';
 import LoginModal from '../Login';
 import Loader from '../Loader';
 
-import Firebase from '../../utils/firebase';
 import { withStore } from '../../utils/store';
 
 const RightSection = ({ isLogged, onClick }) => (
@@ -24,35 +23,9 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
-	handleLogin = ({ email, password }) => {
-		const { dispatch } = this.props;
-
-		dispatch({ type: 'SHOW_LOADER', showLoader: true });
-		return Firebase.logIn(email, password).then(() => {
-			dispatch({ type: 'LOGIN', email, password });
-		}).catch((error) => (
-			Promise.reject(error)
-		)).finally(() => {
-			dispatch({ type: 'SHOW_LOADER', showLoader: false });
-		});
-	}
-
-	handleLogOut = () => {
-		const { dispatch } = this.props;
-
-		return Firebase.logOut().then(() => {
-			dispatch({ type: 'LOGOUT' });
-		});
-	}
-	
 	showLoginModal = () => {
 		const { dispatch } = this.props;
 		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: true });
-	}
-	
-	hideLoginModal = () => {
-		const { dispatch } = this.props;
-		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
 	}
 
 	constructor(props) {
@@ -61,7 +34,7 @@ class Header extends Component {
 		this.loginModal;
 	}
 
-	render({ openSidenav, store: { userLogged, showLoader, showLoginModal } }) {
+	render({ openSidenav, dispatch, store: { userLogged, showLoader, showLoginModal } }) {
 		return (
 			<div>
 				<AppBar
@@ -75,10 +48,7 @@ class Header extends Component {
 					}
 				/>
 				{showLoginModal && (
-					<LoginModal
-						hideLoginModal={this.hideLoginModal}
-						onLogin={this.handleLogin}
-					/>
+					<LoginModal />
 				)}
 				{showLoader && (
 					<Loader />
