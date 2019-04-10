@@ -5,6 +5,7 @@ import LoginModal from '../Login';
 import Loader from '../Loader';
 
 import { withStore } from '../../utils/store';
+import Firebase from '../../utils/firebase';
 
 const RightSection = ({ isLogged, onClick }) => (
 	<Button secondary onClick={onClick}>
@@ -23,6 +24,14 @@ const TitleSection = ({ openSidenav }) => (
 );
 	
 class Header extends Component {
+	handleLogOut = () => {
+		const { dispatch } = this.props;
+
+		Firebase.logOut().then(() => {
+			dispatch({ type: 'LOGOUT' });
+		});
+	}
+
 	showLoginModal = () => {
 		const { dispatch } = this.props;
 		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: true });

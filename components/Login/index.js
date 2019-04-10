@@ -25,14 +25,6 @@ class LoginModal extends Component {
 		});
 	}
 
-	handleLogOut = () => {
-		const { dispatch } = this.props;
-
-		Firebase.logOut().then(() => {
-			dispatch({ type: 'LOGOUT' });
-		});
-	}
-
 	constructor(props) {
 		super(props);
 
