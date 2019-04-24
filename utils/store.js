@@ -1,4 +1,5 @@
 import { State } from 'statty';
+import Firebase from './firebase';
 
 let initialState = {
 	userLogged: false,
@@ -42,12 +43,18 @@ const dispatch = action => state => reducer(state, action);
 
 const withStore = (Component) => (props) => (
 	<State
-		render={({ ...store }, update) => ( // eslint-disable-line
-			<Component
-				{...props}
-				{...{ store, dispatch: (...args) => { update(dispatch(...args)); } }}
-			/>
-		)}
+		render={(store, update) => { // eslint-disable-line
+			const dispatchShort = (...args) => { update(dispatch(...args)); };
+
+			return (
+				<Firebase {...{ store, dispatch: dispatchShort }} >
+					<Component
+						{...props}
+						{...{ store, dispatch: dispatchShort }}
+					/>
+				</Firebase>
+			);
+		}}
 	/>
 );
 
