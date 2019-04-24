@@ -25,25 +25,22 @@ const TitleSection = ({ openSidenav }) => (
 	
 class Header extends Component {
 	handleLogOut = () => {
-		const { dispatch } = this.props;
-
-		Firebase.logOut().then(() => {
-			dispatch({ type: 'LOGOUT' });
-		});
+		Firebase.logOut();
 	}
 
 	showLoginModal = () => {
 		const { dispatch } = this.props;
-		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: true });
+		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: 'LOGIN' });
 	}
 
 	constructor(props) {
 		super(props);
 
 		this.loginModal;
+		Firebase.startLoginObserver(props.dispatch);
 	}
-
-	render({ openSidenav, dispatch, store: { userLogged, showLoader, showLoginModal } }) {
+	
+	render({ openSidenav, store: { userLogged, showLoader, showLoginModal } }) {
 		return (
 			<div>
 				<AppBar

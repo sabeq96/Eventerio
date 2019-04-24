@@ -2,10 +2,12 @@ import { State } from 'statty';
 
 let initialState = {
 	userLogged: false,
-	showLoader: false
+	showLoader: false,
+	showLoginModal: false
 };
 
 const reducer = ( state, action ) => {
+	console.log(action);
 	switch (action.type) {
 		case 'LOGIN':
 			return {

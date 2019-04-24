@@ -13,10 +13,15 @@ class Firebase {
 	constructor() {
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
+		this.users = firebase.firestore().collection('users');
 	}
 
 	createUser = (email, password) => (
-		this.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password)
+		this.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password).then((response) => {
+			console.log(response);
+
+			return Promise.reject(response);
+		})
 	)
 
 	logIn = (email, password) => (
@@ -30,6 +35,19 @@ class Firebase {
 	updatePassword = (password) => (
 		this.auth.currentUser.updatePassword(password)
 	)
+
+	getUser = () => (
+		this.auth.currentUser
+	)
+
+	startLoginObserver = (dispatch) => (
+		this.auth.onAuthStateChanged((user) => {
+			if (user) dispatch({ type: 'LOGIN', user });
+			else dispatch({ type: 'LOGOUT' });
+
+		})
+	)
+
 }
 
 export default new Firebase();

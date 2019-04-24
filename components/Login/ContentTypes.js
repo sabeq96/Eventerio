@@ -29,7 +29,7 @@ const ContentTypes = ({ contentType, onChange, values: { email, password, confir
 			);
 		}
 
-		case 'REGISTER' : {
+		case 'SIGNIN' : {
 			return (
 				<div>
 					<TextField
