@@ -1,118 +1,28 @@
 import { h, Component } from 'preact';
 import linkstate from 'linkstate';
-import {  Button, Card, CardHeader, CardBody, CardFooter, TextField } from 'preact-fluid';
+import Firebase from '../../utils/firebase';
+import { withStore } from '../../utils/store';
+
+import {  Button, Card, CardHeader, CardBody, CardFooter } from 'preact-fluid';
 import OutsideClickHandler from '../OutsideClickHandler';
 
+import ContentTypes from './ContentTypes';
+
 class LoginModal extends Component {
-	onLoginClick = (e) => {
+	handleLogin = (e) => {
 		e.preventDefault();
-		const { onLogin } = this.props;
+		const { dispatch } = this.props;
 		const { email, password } = this.state;
 
-		onLogin({ email, password }).then(() => {
-			this.hideModal();
-		}).catch((error) => {
-			if (error.message) {
-				this.setState({ error: error.message });
-			}
+		dispatch({ type: 'SHOW_LOADER', showLoader: true });
+		Firebase.logIn(email, password).then(() => {
+			dispatch({ type: 'LOGIN', email, password });
+			dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
+		}).catch((error) => (
+			this.setState({ error: error.message })
+		)).finally(() => {
+			dispatch({ type: 'SHOW_LOADER', showLoader: false });
 		});
-	}
-
-	hideModal = () => {
-		const { hideLoginModal } = this.props;
-
-		this.setState({ email: '', password: '', error: '' });
-		hideLoginModal();
-	}
-
-	getContent(contentType) {
-		switch (contentType) {
-			case 'LOGIN' : {
-				const { email, password, error } = this.state;
-				return (
-					<div>
-						<TextField
-							type="text"
-							label="email"
-							onChange={linkstate(this, 'email')}
-							value={email}
-						/>
-						<TextField
-							type="password"
-							label="password"
-							onChange={linkstate(this, 'password')}
-							value={password}
-							style={{ marginTop: '20px' }}
-						/>
-						{error && (
-							<div style={styles.error}>
-								{error}
-							</div>
-						)}
-					</div>
-				);
-			}
-
-			case 'REGISTER' : {
-				const { email, password, confirmPassword, error } = this.state;
-				return (
-					<div>
-						<TextField
-							type="text"
-							label="email"
-							onChange={linkstate(this, 'email')}
-							value={email}
-						/>
-						<TextField
-							type="password"
-							label="password"
-							onChange={linkstate(this, 'password')}
-							value={password}
-							style={{ marginTop: '20px' }}
-						/>
-						<TextField
-							type="password"
-							label="confirm password"
-							onChange={linkstate(this, 'confirmPassword')}
-							value={confirmPassword}
-							style={{ marginTop: '20px' }}
-						/>
-						{error && (
-							<div style={styles.error}>
-								{error}
-							</div>
-						)}
-					</div>
-				);
-			}
-
-			case 'CHANGE_PASSWORD' : {
-				const { password, confirmPassword, error } = this.state;
-				return (
-					<div>
-						<TextField
-							type="password"
-							label="password"
-							onChange={linkstate(this, 'password')}
-							value={password}
-							style={{ marginTop: '20px' }}
-						/>
-						<TextField
-							type="password"
-							label="confirm password"
-							onChange={linkstate(this, 'confirmPassword')}
-							value={confirmPassword}
-							style={{ marginTop: '20px' }}
-						/>
-						{error && (
-							<div style={styles.error}>
-								{error}
-							</div>
-						)}
-					</div>
-				);
-			}
-		}
 	}
 
 	constructor(props) {
@@ -126,7 +36,7 @@ class LoginModal extends Component {
 		};
 	}
 
-	render(props, { email, password, error }) {
+	render(props, { email, password, confirmPassword, error }) {
 		return (
 			<div style={styles.loginModalWrapper}>
 				<OutsideClickHandler onClickOutside={this.hideModal} id="loginModal">
@@ -134,13 +44,17 @@ class LoginModal extends Component {
 						<CardHeader title="Log In" />
 						<form>
 							<CardBody>
-								{ this.getContent('LOGIN') }
+								<ContentTypes
+									values={{ email, password, confirmPassword, error }}
+									contentType="LOGIN"
+									onChange={(fieldName) => linkstate(this, fieldName)}
+								/>
 							</CardBody>
 							<CardFooter
 								right={
 									<Button
 										primary
-										onClick={this.onLoginClick}
+										onClick={this.handleLogin}
 									>
 											Log In
 									</Button>
@@ -155,10 +69,6 @@ class LoginModal extends Component {
 }
 
 const styles = {
-	error: {
-		color: '#F00',
-		textAlign: 'center'
-	},
 	card: {
 		width: '350px'
 	},
@@ -177,4 +87,4 @@ const styles = {
 	}
 };
 
-export default LoginModal;
+export default withStore(LoginModal);
