@@ -17,11 +17,7 @@ class Firebase {
 	}
 
 	createUser = (email, password) => (
-		this.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password).then((response) => {
-			console.log(response);
-
-			return Promise.reject(response);
-		})
+		this.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password)
 	)
 
 	logIn = (email, password) => (
@@ -40,6 +36,7 @@ class Firebase {
 		this.auth.currentUser
 	)
 
+	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => (
 		this.auth.onAuthStateChanged((user) => {
 			if (user) dispatch({ type: 'LOGIN', user });
