@@ -40,7 +40,7 @@ class Header extends Component {
 		Firebase.startLoginObserver(props.dispatch);
 	}
 	
-	render({ openSidenav, store: { userLogged, showLoader, modalType } }) {
+	render({ openSidenav, store: { user, showLoader, modalType } }) {
 		return (
 			<div>
 				<AppBar
@@ -48,8 +48,8 @@ class Header extends Component {
 					leftSection={<TitleSection openSidenav={openSidenav} />}
 					rightSection={
 						<RightSection
-							isLogged={userLogged}
-							onClick={userLogged ? this.handleLogOut : this.showLoginModal}
+							isLogged={user}
+							onClick={user ? this.handleLogOut : this.showLoginModal}
 						/>
 					}
 				/>

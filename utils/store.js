@@ -18,13 +18,13 @@ const reducer = ( state, action ) => {
 		case 'LOGIN':
 			return {
 				...state,
-				userLogged: true
+				user: action.user
 			};
       
 		case 'LOGOUT':
 			return {
 				...state,
-				userLogged: false
+				user: null
 			};
 
 		case 'SHOW_LOADER':

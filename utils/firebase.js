@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { actions } from './store';
+import errorMessages from '../constants/errorMessages';
 
 const config = {
 	apiKey: 'AIzaSyDITmSuTTlBzt9j2rv0Dra0GE2zTcE9qdk',
@@ -14,12 +15,69 @@ class Firebase {
 	constructor() {
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
-		this.users = firebase.firestore().collection('users');
+		this.db = firebase.database();
 	}
 
 	createUser = (email, password) => (
-		this.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password)
+		this.auth.createUserWithEmailAndPassword(email, password)
+			.then(() => {
+				const user = this.auth.currentUser;
+				if (user) {
+					this.setUserData(user.uid, { email: user.email }).then(() => (
+						Promise.resolve({ email: user.email })
+					)).catch(() => (
+						Promise.reject({ message: errorMessages.userDataNotSetted })
+					));
+				}
+			})
+			.catch((error) => (
+				Promise.reject(error)
+			))
 	)
+
+	setUserData = (id, { avatarUrl, city, comments, events, name, surname, email, settings }) => (
+		this.db.ref('users/' + id).set({
+			avatarUrl: avatarUrl || '',
+			city: city || '',
+			comments: comments || [],
+			events: events || [],
+			name: name || '',
+			surname: surname || '',
+			email: email || '',
+			settings: {
+				eventsMaxDistance: (settings && settings.eventsMaxDistance) || 30
+			}
+		})
+	);
+
+	getUser = () => {
+		const user = this.auth.currentUser;
+		if (user) {
+			return this.db.ref('users/' + user.uid).once('value').then((snapshot) => (
+				Promise.resolve(snapshot.val())
+			)).catch(() => (
+				Promise.reject({ message: errorMessages.userNotFound })
+			));
+		}
+	}
+
+	updateUser = ({ avatarUrl, city, name, surname, email, settings }) => {
+		const user = this.auth.currentUser;
+		if (user) {
+			const userPath = `users/${user.uid}`;
+			const updates = {};
+			if (avatarUrl) updates[userPath + 'avatarUrl'] = avatarUrl;
+			if (city) updates[userPath + 'city'] = city;
+			if (name) updates[userPath + 'name'] = name;
+			if (surname) updates[userPath + 'surname'] = surname;
+			if (email) updates[userPath + 'email'] = email;
+			if (settings.eventsMaxDistance)
+				updates[userPath + 'settings/eventsMaxDistance'] = settings.eventsMaxDistance;
+
+			this.db.ref().update(updates);
+		}
+
+	}
 
 	logIn = (email, password) => (
 		this.auth.signInWithEmailAndPassword(email, password)
@@ -33,17 +91,18 @@ class Firebase {
 		this.auth.currentUser.updatePassword(password)
 	)
 
-	getUser = () => (
-		this.auth.currentUser
-	)
-
 	// TIP: this method handle all login status change and should also update store with user data
-	startLoginObserver = (dispatch) => (
-		this.auth.onAuthStateChanged((user) => {
-			if (user) dispatch({ type: actions.LOGIN, user });
+	startLoginObserver = (dispatch) => {
+		this.auth.onAuthStateChanged(async (user) => {
+			if (user) {
+				dispatch({ type: actions.SHOW_LOADER, showLoader: true });
+				const userData = await this.getUser();
+				dispatch({ type: actions.LOGIN, user: userData });
+				dispatch({ type: actions.SHOW_LOADER, showLoader: false });
+			}
 			else dispatch({ type: actions.LOGOUT });
-		})
-	)
+		});
+	}
 
 }
 
