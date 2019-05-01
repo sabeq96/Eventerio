@@ -1,0 +1,44 @@
+{
+    "comments" : {
+      "-LdUJS5ZDek-gSQddg5B" : {
+        "content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "createdAt" : 1556376665,
+        "eventId" : "-LdUHMuHOsa4B8aoIimL",
+        "userId" : "lRn0Oa12FtWKISBlRhIiRVRVUVC2"
+      }
+    },
+    "events" : {
+      "-LdU_ylvZD0OpsyjZXjg" : {
+        "address" : "Rynek Główny Kraków",
+        "attendees" : [ "2xYHgcsFYHg3dvhti3iKX8AjxQq1" ],
+        "comments" : [ "-LdUIHzzh3l0nGAKP5pD" ],
+        "contactDetails" : "test@eventerio.com",
+        "coordinates" : {
+          "latitude" : 50.061933,
+          "longitude" : 19.936915
+        },
+        "createdAt" : 1556376665,
+        "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac sodales felis. Cras purus mi, sagittis nec odio nec, pharetra egestas ligula. Curabitur fermentum dictum lacinia. Pellentesque at massa nulla. Donec porta, libero ut viverra ullamcorper, eros ante facilisis risus, a lacinia metus nisi nec magna. Ut commodo, erat eu interdum feugiat, dui nunc malesuada augue, ut molestie lectus mauris hendrerit felis. Nunc rutrum, quam non ullamcorper lacinia, tortor erat vulputate quam, vel tincidunt lorem purus eu felis. Mauris eleifend feugiat enim quis vehicula. Curabitur dictum, justo at consectetur malesuada, quam nisi sagittis ipsum, eget auctor felis felis in dui.",
+        "endTime" : 1556376665,
+        "name" : "Event name",
+        "photoUrl" : "https://via.placeholder.com/300/?text=Eventerio",
+        "shortDescription" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "userId" : "lRn0Oa12FtWKISBlRhIiRVRVUVC2",
+        "startTime" : 1556376665
+      }
+    },
+    "users" : {
+      "lRn0Oa12FtWKISBlRhIiRVRVUVC2" : {
+        "avatarUrl" : "https://via.placeholder.com/300/?text=Avatar",
+        "city" : "Kraków",
+        "comments" : [ "-LdUIHzzh3l0nGAKP5pD" ],
+        "events" : [ "-LdUHMuHOsa4B8aoIimL" ],
+        "name" : "John",
+        "settings" : {
+          "eventsMaxDistance" : 10
+        },
+        "surname" : "Kowalski"
+      }
+    }
+  }
+  
