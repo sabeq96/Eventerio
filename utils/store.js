@@ -6,6 +6,13 @@ let initialState = {
 	showLoginModal: false
 };
 
+const actions = {
+	LOGIN: 'LOGIN',
+	LOGOUT: 'LOGOUT',
+	SHOW_LOADER: 'SHOW_LOADER',
+	SHOW_LOGIN_MODAL: 'SHOW_LOGIN_MODAL'
+};
+
 const reducer = ( state, action ) => {
 	switch (action.type) {
 		case 'LOGIN':
@@ -29,7 +36,7 @@ const reducer = ( state, action ) => {
 		case 'SHOW_LOGIN_MODAL':
 			return {
 				...state,
-				showLoginModal: action.showLoginModal
+				modalType: action.modalType
 			};
       
 		default:
@@ -52,4 +59,4 @@ const withStore = (Component) => (props) => (
 	/>
 );
 
-export { initialState, withStore };
+export { initialState, withStore, actions };

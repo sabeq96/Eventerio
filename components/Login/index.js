@@ -1,28 +1,30 @@
-import { h, Component } from 'preact';
+import { Component } from 'preact';
 import linkstate from 'linkstate';
 import Firebase from '../../utils/firebase';
-import { withStore } from '../../utils/store';
+import { withStore, actions } from '../../utils/store';
 
-import {  Button, Card, CardHeader, CardBody, CardFooter } from 'preact-fluid';
+import { Button, Card, CardHeader, CardBody, CardFooter } from 'preact-fluid';
 import OutsideClickHandler from '../OutsideClickHandler';
 
 import ContentTypes from './ContentTypes';
 
+import errorMessages from '../../constants/errorMessages';
+
 class LoginModal extends Component {
 	changeContentTypeToSignIn = () => {
 		this.setState({ error: null });
-		this.props.dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: 'SIGNIN' });
+		this.props.dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'SIGNIN' });
 	}
 	changeContentTypeToLogIn = () => {
 		this.setState({ error: null });
-		this.props.dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: 'LOGIN' });
+		this.props.dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'LOGIN' });
 	}
 	
 	getContentSpecs = (type) => {
 		const CONTENT_TYPES = {
 			SIGNIN: { key: 'SIGNIN', value: 'Sign In', action: this.handleSignIn },
 			LOGIN: { key: 'LOGIN', value: 'Log In', action: this.handleLogin },
-			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password' }
+			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password' } // todo handle change pass
 		};
 
 		return type ? CONTENT_TYPES[type]: {};
@@ -30,7 +32,7 @@ class LoginModal extends Component {
 
 	hideModal = () => {
 		const { dispatch } = this.props;
-		dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
+		dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: false });
 	}
 
 	handleLogin = (e) => {
@@ -38,13 +40,13 @@ class LoginModal extends Component {
 		const { dispatch } = this.props;
 		const { email, password } = this.state;
 
-		dispatch({ type: 'SHOW_LOADER', showLoader: true });
+		dispatch({ type: actions.SHOW_LOADER, showLoader: true });
 		Firebase.logIn(email, password).then(() => {
-			dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
+			dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: false });
 		}).catch((error) => (
 			this.setState({ error: error.message })
 		)).finally(() => {
-			dispatch({ type: 'SHOW_LOADER', showLoader: false });
+			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
 		});
 	}
 
@@ -54,17 +56,17 @@ class LoginModal extends Component {
 		const { email, password, confirmPassword } = this.state;
 
 		if ( password === confirmPassword ) {
-			dispatch({ type: 'SHOW_LOADER', showLoader: true });
+			dispatch({ type: actions.SHOW_LOADER, showLoader: true });
 			Firebase.createUser(email, password).then(() => {
-				dispatch({ type: 'SHOW_LOGIN_MODAL', showLoginModal: false });
+				dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: false });
 			}).catch((error) => (
 				this.setState({ error: error.message })
 			)).finally(() => {
-				dispatch({ type: 'SHOW_LOADER', showLoader: false });
+				dispatch({ type: actions.SHOW_LOADER, showLoader: false });
 			});
 		}
 		else {
-			this.setState({ error: 'Passwords are not the same' });
+			this.setState({ error: errorMessages.passwordsNotEqual });
 		}
 	}
 
@@ -84,12 +86,12 @@ class LoginModal extends Component {
 			<div style={styles.loginModalWrapper}>
 				<OutsideClickHandler onClickOutside={this.hideModal} id="loginModal">
 					<Card style={styles.card}>
-						<CardHeader title={this.getContentSpecs(store.showLoginModal).value} />
+						<CardHeader title={this.getContentSpecs(store.modalType).value} />
 						<form>
 							<CardBody>
 								<ContentTypes
 									values={{ email, password, confirmPassword, error }}
-									contentType={store.showLoginModal}
+									contentType={store.modalType}
 									onChange={(fieldName) => linkstate(this, fieldName)} // eslint-disable-line
 								/>
 							</CardBody>
@@ -97,19 +99,19 @@ class LoginModal extends Component {
 								right={
 									<Button
 										primary
-										onClick={this.getContentSpecs(store.showLoginModal).action}
+										onClick={this.getContentSpecs(store.modalType).action}
 									>
-										{this.getContentSpecs(store.showLoginModal).value}
+										{this.getContentSpecs(store.modalType).value}
 									</Button>
 								}
 							/>
-							{ store.showLoginModal === 'LOGIN' && (
+							{ store.modalType === 'LOGIN' && (
 								<div style={styles.linkWrapper} onClick={this.changeContentTypeToSignIn}>
 									You don't have account? <span style={styles.link}>Sign In</span>
 								</div>
 							)}
 
-							{ store.showLoginModal === 'SIGNIN' && (
+							{ store.modalType === 'SIGNIN' && (
 								<div style={styles.linkWrapper} onClick={this.changeContentTypeToLogIn}>
 									You arleady have account? <span style={styles.link}>Log In</span>
 								</div>
