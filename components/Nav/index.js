@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { List, ListHeader, ListItem, Icon, Link, Button } from 'preact-fluid';
 import { route } from 'preact-router';
 import OutsideClickHandler from '../OutsideClickHandler';
