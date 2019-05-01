@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { TextField } from 'preact-fluid';
 
 

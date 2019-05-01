@@ -28,7 +28,7 @@ class Header extends Component {
 		Firebase.logOut();
 	}
 
-	modalType = () => {
+	showLoginModal = () => {
 		const { dispatch } = this.props;
 		dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'LOGIN' });
 	}
@@ -49,7 +49,7 @@ class Header extends Component {
 					rightSection={
 						<RightSection
 							isLogged={userLogged}
-							onClick={userLogged ? this.handleLogOut : this.modalType}
+							onClick={userLogged ? this.handleLogOut : this.showLoginModal}
 						/>
 					}
 				/>
