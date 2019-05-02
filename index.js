@@ -5,7 +5,7 @@ import { Provider } from 'statty';
 import { ThemeProvider } from 'preact-fluid';
 
 import Sidebar from 'preact-sidenav';
-import Header from './components/Header';
+import Header from './containers/Header';
 import Nav from './components/Nav';
 import Home from './containers/Home';
 
