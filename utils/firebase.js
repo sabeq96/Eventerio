@@ -66,13 +66,13 @@ class Firebase {
 		if (user) {
 			const userPath = `users/${user.uid}`;
 			const updates = {};
-			if (avatarUrl) updates[userPath + 'avatarUrl'] = avatarUrl;
-			if (city) updates[userPath + 'city'] = city;
-			if (name) updates[userPath + 'name'] = name;
-			if (surname) updates[userPath + 'surname'] = surname;
-			if (email) updates[userPath + 'email'] = email;
+			if (avatarUrl) updates[userPath + '/avatarUrl'] = avatarUrl;
+			if (city) updates[userPath + '/city'] = city;
+			if (name) updates[userPath + '/name'] = name;
+			if (surname) updates[userPath + '/surname'] = surname;
+			if (email) updates[userPath + '/email'] = email;
 			if (settings.eventsMaxDistance)
-				updates[userPath + 'settings/eventsMaxDistance'] = settings.eventsMaxDistance;
+				updates[userPath + '/settings/eventsMaxDistance'] = settings.eventsMaxDistance;
 
 			this.db.ref().update(updates);
 		}
