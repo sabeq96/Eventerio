@@ -14,6 +14,9 @@ const styles = {
 	title: {
 		fontSize: '24px',
 		marginLeft: '10px'
+	},
+	titleWrapper: {
+		cursor: 'pointer'
 	}
 };
 
