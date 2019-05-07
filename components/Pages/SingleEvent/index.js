@@ -8,7 +8,7 @@ const JoinButton = () => (
 		<Animate
 			component={
 				<Button rounded left={<Icon name="check" size="xsmall" />}>
-					<span> Dołącz do eventu!</span>
+					<span>Dołącz do eventu!</span>
 				</Button>
 			}
 			animation={{
