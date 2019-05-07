@@ -3,6 +3,7 @@ import { cloneElement } from 'preact';
 /*
 	justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly;
 	align-items: stretch | flex-start | flex-end | center | baseline;
+	if breakpoint reached all cells recieve 100% width
 */
 
 const Grid = ({ children, style, justifyContent, alignItems, gap, breakpoint }) => {
