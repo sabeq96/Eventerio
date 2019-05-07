@@ -1,5 +1,5 @@
 import './style';
-import { h, Component } from 'preact';
+import { Component } from 'preact';
 import { Router } from 'preact-router';
 import { Provider } from 'statty';
 import { ThemeProvider } from 'preact-fluid';
@@ -7,7 +7,9 @@ import { ThemeProvider } from 'preact-fluid';
 import Sidebar from 'preact-sidenav';
 import Header from './components/Header';
 import Nav from './components/Nav';
+
 import Home from './containers/Home';
+import SingleEvent from './components/Pages/SingleEvent';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
 import { initialState } from './utils/store';
@@ -15,10 +17,6 @@ import { initialState } from './utils/store';
 const theme = {};
 
 class App extends Component {
-	handleRoute = e => {
-		this.currentUrl = e.url;
-	}
-
 	handleAppInstall = () => {
 		promptInstallApp(this);
 	}
@@ -52,8 +50,9 @@ class App extends Component {
 						<Sidebar sidebar={this.getNav()}>
 							<Header />
 						</Sidebar>
-						<Router onChange={this.handleRoute}>
+						<Router>
 							<Home path="/" />
+							<SingleEvent path="/events/:slug" />
 						</Router>
 					</div>
 				</ThemeProvider>
