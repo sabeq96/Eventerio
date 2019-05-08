@@ -12,8 +12,24 @@ div {
 	box-sizing: border-box;
 }
 
+.appWrapper { 
+    padding-top: 60px;
+}
+
 .container {
 	padding: 35px;
 	max-width: 1170px;
 	margin: 0 auto;
+}
+
+.stickyHeader {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 95;
+}
+
+md-sidenav { 
+    z-index: 100 !important;
+    position: fixed !important;
 }

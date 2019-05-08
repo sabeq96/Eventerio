@@ -50,10 +50,12 @@ class App extends Component {
 						<Sidebar sidebar={this.getNav()}>
 							<Header />
 						</Sidebar>
-						<Router>
-							<Home path="/" />
-							<SingleEvent path="/events/:slug" />
-						</Router>
+                        <div className="appWrapper">
+                            <Router>
+                                <Home path="/" />
+                                <SingleEvent path="/events/:slug" />
+                            </Router>
+                        </div>
 					</div>
 				</ThemeProvider>
 			</Provider>

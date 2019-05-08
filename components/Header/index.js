@@ -42,7 +42,7 @@ class Header extends Component {
 	
 	render({ openSidenav, store: { user, showLoader, modalType } }) {
 		return (
-			<div>
+			<div id="stickyHeader" className="stickyHeader">
 				<AppBar
 					primary
 					leftSection={<TitleSection openSidenav={openSidenav} />}
