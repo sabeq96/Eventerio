@@ -5,17 +5,17 @@ import OutsideClickHandler from '../OutsideClickHandler';
 import './style';
 
 const links = [{
-	name: 'Menu Item',
-	path: '/123'
+	name: 'Test single Event',
+	path: '/events/123'
 }, {
-	name: 'Menu Item',
-	path: '/123'
+	name: 'Home Page',
+	path: '/'
 }, {
-	name: 'Menu Item',
-	path: '/123'
+	name: 'Home Page',
+	path: '/'
 }, {
-	name: 'Menu Item',
-	path: '/123'
+	name: 'Home Page',
+	path: '/'
 }];
 
 const InstallButton = ({ showButton, onClick }) => (
@@ -47,7 +47,7 @@ const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton, opened }) => 
 				<ListItem>
 					<Link
 						href={link.path}
-								onClick={() => { // eslint-disable-line
+							onClick={() => { // eslint-disable-line
 							route(link.path);
 							closeSidenav();
 						}}

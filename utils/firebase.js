@@ -93,12 +93,16 @@ class Firebase {
 
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {
-		this.auth.onAuthStateChanged(async (user) => {
+		this.auth.onAuthStateChanged((user) => {
 			if (user) {
 				dispatch({ type: actions.SHOW_LOADER, showLoader: true });
-				const userData = await this.getUser();
-				dispatch({ type: actions.LOGIN, user: userData });
-				dispatch({ type: actions.SHOW_LOADER, showLoader: false });
+				this.getUser().then((userData) => {
+					dispatch({ type: actions.LOGIN, user: userData });
+				}).catch((error) => {
+					console.log(error);
+				}).finally(() => {
+					dispatch({ type: actions.SHOW_LOADER, showLoader: false });
+				});
 			}
 			else dispatch({ type: actions.LOGOUT });
 		});

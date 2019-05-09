@@ -1,4 +1,5 @@
-import { h, Component } from 'preact';
+import { Component } from 'preact';
+import 'style';
 
 class Home extends Component {
 	constructor(props) {
@@ -9,11 +10,13 @@ class Home extends Component {
 
 	render(props, state) {
 		return (
-			<div>
-        Home Page
+			<div className="container">
+				Home Page
 			</div>
 		);
 	}
 }
+
+const styles = {};
 
 export default Home;
