@@ -8,7 +8,7 @@ const JoinButton = () => (
 		<Animate
 			component={
 				<Button rounded left={<Icon name="check" size="xsmall" />}>
-					<span>Dołącz do eventu!</span>
+					<span>Join us !</span>
 				</Button>
 			}
 			animation={{
@@ -41,7 +41,7 @@ const EventOwnerDetails = ({ avatarUrl, userName }) => (
 			<Cell center>
 				<CardHeader
 					title={userName}
-					subtitle="Organizator"
+					subtitle="Event organizer"
 				/>
 			</Cell>
 		</Grid>
@@ -57,7 +57,7 @@ const EventHeader = ({ title, children, image, bodyWidth }) => (
 		>
 			<h1 style={styles.header.coverHeader}>{title}</h1>
 			<p> {children} </p>
-			<Button primary left={<Icon name="check" size="xsmall" />}>DOŁĄCZ</Button>
+			<Button primary left={<Icon name="check" size="xsmall" />}>JOIN!</Button>
 		</div>
 		<div
 			style={{
@@ -121,11 +121,11 @@ class Home extends Component {
 							<CardBody>
 								<EventInfo
 									content="17 maj 2019"
-									label="Data: "
+									label="Date: "
 								/>
 								<EventInfo
 									content="ul. Warszawska 18, Zakopane"
-									label="Adres:"
+									label="Address:"
 								/>
 								<EventOwnerDetails
 									avatarUrl="https://avatars1.githubusercontent.com/u/1182600?s=460&v=4"
@@ -144,13 +144,13 @@ class Home extends Component {
 						</Card>
 					</Cell>
 				</Grid>
-				<SectionWithHeader title="Szczegółowy opis">
+				<SectionWithHeader title="Description">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sapien purus, vestibulum vitae massa sed, ornare consequat massa. Nam pharetra sagittis faucibus. Vivamus commodo consectetur euismod. Nulla mollis orci justo, sed placerat enim volutpat non. Cras in ultrices nibh. Ut varius erat eget leo hendrerit, vel placerat mauris rutrum. Nunc venenatis felis nec sollicitudin aliquam. Aliquam erat volutpat.<br /><br />
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo euismod orci vitae tempus. Sed tempus gravida varius. Suspendisse eget urna purus. Phasellus et turpis eros. Donec maximus dolor ac tempus ornare. Vestibulum orci erat, faucibus nec enim aliquet, vestibulum interdum libero. Pellentesque quis dolor vel lacus pretium malesuada auctor a magna. Cras ut condimentum nisi. In id dapibus nulla.<br /><br />
 					Donec nisl velit, laoreet a hendrerit non, dapibus non risus. Pellentesque ac lectus dui. Fusce massa orci, tempus sit amet lectus at, commodo finibus dolor. Ut posuere eu metus non vestibulum. Maecenas semper, orci mollis scelerisque tincidunt, erat justo interdum elit, eget porta lorem tellus id elit. Praesent luctus neque ac vestibulum venenatis. In justo sem, aliquam ut ligula sed, aliquam feugiat nisl. Sed sagittis sapien ex, ac tincidunt velit pellentesque a. Morbi elit arcu, imperdiet fringilla condimentum sed, vulputate a sapien. Etiam gravida ullamcorper libero, et consectetur neque rhoncus ut. Vivamus nunc erat, convallis nec lectus sit amet, ullamcorper maximus mauris. Etiam tempus est id convallis cursus.
 					<JoinButton />
 				</SectionWithHeader>
-				<SectionWithHeader title="Komentarze">
+				<SectionWithHeader title="Comments">
 					Tak lub nie?
 				</SectionWithHeader>
 
