@@ -34,7 +34,7 @@ const EventOwnerDetails = ({ avatarUrl, userName }) => (
 			<Cell center>
 				<Image
 					src={avatarUrl}
-					style={`height: 80px; width: 80px`}
+					style={styles.card.avatarImage}
 					rounded
 				/>
 			</Cell>
@@ -167,6 +167,10 @@ const styles = {
 		margin: '20px'
 	},
 	card: {
+		avatarImage: {
+			height: '80px',
+			width: '80px'
+		},
 		cardInfoWrapper: {
 			marginBottom: '15px'
 		},
