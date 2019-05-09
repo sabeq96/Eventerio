@@ -1,9 +1,9 @@
 import { Button } from 'preact-fluid';
 
-const HeaderRightSection = ({ isLogged, onClick }) => (
+const RightSection = ({ isLogged, onClick }) => (
 	<Button secondary onClick={onClick}>
 		{isLogged ? 'Log Out' : 'Log In'}
 	</Button>
 );
 
-export default HeaderRightSection;
+export default RightSection;

@@ -2,7 +2,7 @@ import { Component } from 'preact';
 
 import LoginModal from '../../components/Login';
 import Loader from '../../components/Loader';
-import HeaderAppBar from '../../components/HeaderAppBar';
+import AppBar from './AppBar';
 
 import { withStore, actions } from '../../utils/store';
 import Firebase from '../../utils/firebase';
@@ -27,7 +27,7 @@ class Header extends Component {
 	render({ openSidenav, store: { user, showLoader, modalType } }) {
 		return (
 			<div>
-				<HeaderAppBar
+				<AppBar
 					openSidenav={openSidenav}
 					user={user}
 					handleLogOut={this.handleLogOut}
