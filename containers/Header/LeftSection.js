@@ -1,6 +1,6 @@
 import { Icon } from 'preact-fluid';
 
-const HeaderLeftSection = ({ openSidenav }) => (
+const LeftSection = ({ openSidenav }) => (
 	<div onClick={openSidenav} style={styles.titleWrapper}>
 		<Icon
 			name="bars"
@@ -20,4 +20,4 @@ const styles = {
 	}
 };
 
-export default HeaderLeftSection;
+export default LeftSection;
