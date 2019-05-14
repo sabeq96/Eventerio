@@ -16,6 +16,7 @@ class Firebase {
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
 		this.db = firebase.database();
+		this.storage = firebase.storage();
 	}
 
 	createUser = (email, password) => (
@@ -74,7 +75,7 @@ class Firebase {
 			if (settings.eventsMaxDistance)
 				updates[userPath + '/settings/eventsMaxDistance'] = settings.eventsMaxDistance;
 
-			this.db.ref().update(updates);
+			return this.db.ref().update(updates);
 		}
 
 	}
@@ -106,6 +107,13 @@ class Firebase {
 			}
 			else dispatch({ type: actions.LOGOUT });
 		});
+	}
+
+	uploadFile(file) {
+		const filename = new Date().getTime().toString();
+		const imageRef = this.storage.ref().child(filename);
+
+		return imageRef.put(file);
 	}
 
 }
