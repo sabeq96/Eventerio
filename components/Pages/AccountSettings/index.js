@@ -100,24 +100,35 @@ class AccountSettings extends Component {
 					<AvatarSection avatarUrl={state.user.avatarUrl} onChange={this.handleFileChange} />
 					<div style={styles.cardWrapper}>
 						<CardBody>
-							<TextField label="Name" effect="line" value={state.user.name} onChange={linkstate(this, 'user.name')} />
-							<TextField label="Surname" effect="line" value={state.user.surname} onChange={linkstate(this, 'user.surname')} />
-							<TextField label="Email" effect="line" value={state.user.email} onChange={linkstate(this, 'user.email')} />
-							<TextField label="City" effect="line" value={state.user.city} onChange={linkstate(this, 'user.city')} />
-							<label>Events max distance</label>
-							<input
-								type="range"
-								min={1}
-								max={100}
-								value={state.user.settings.eventsMaxDistance}
-								onChange={linkstate(this, 'user.settings.eventsMaxDistance')}
-							/>
+							<div style={styles.textFieldWrapper}>
+								<TextField label="Name" effect="line" value={state.user.name} onChange={linkstate(this, 'user.name')} />
+							</div>
+							<div style={styles.textFieldWrapper}>
+								<TextField label="Surname" effect="line" value={state.user.surname} onChange={linkstate(this, 'user.surname')} />
+							</div>
+							<div style={styles.textFieldWrapper}>
+								<TextField label="Email" effect="line" value={state.user.email} onChange={linkstate(this, 'user.email')} />
+							</div>
+							<div style={styles.textFieldWrapper}>
+								<TextField label="City" effect="line" value={state.user.city} onChange={linkstate(this, 'user.city')} />
+							</div>
+							<div style={styles.slider}>
+								<div style={{ textAlign: 'center' }}>Events max distance: {this.state.user.settings.eventsMaxDistance}</div>
+								<input
+									type="range"
+									min={1}
+									max={100}
+									value={state.user.settings.eventsMaxDistance}
+									onChange={linkstate(this, 'user.settings.eventsMaxDistance')}
+									styles={styles.slider}
+								/>
+							</div>
 						</CardBody>
 					</div>
-					<CardFooter
-						left={<Button onClick={this.handleChangePassword}>Change password</Button>}
-						right={<Button primary onClick={this.handleSave}>Save</Button>}
-					/>
+					<div style={styles.footer}>
+						<Button onClick={this.handleChangePassword} style={styles.button}>Change password</Button>
+						<Button primary onClick={this.handleSave} style={styles.button}>Save</Button>
+					</div>
 				</Card>
 			</div>
 		);
@@ -128,6 +139,25 @@ const styles = {
 	cardWrapper: {
 		margin: '0 auto',
 		maxWidth: '350px'
+	},
+	textFieldWrapper: {
+		paddingBottom: '30px'
+	},
+	slider: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignContent: 'center',
+		margin: '50px'
+	},
+	footer: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+		margin: '50px'
+	},
+	button: {
+		minWidth: '160px',
+		marginBottom: '20px'
 	}
 };
 
