@@ -10,6 +10,7 @@ import Nav from './components/Nav';
 
 import Home from './containers/Home';
 import SingleEvent from './components/Pages/SingleEvent';
+import AccountSettings from './components/Pages/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
 import { initialState } from './utils/store';
@@ -53,6 +54,7 @@ class App extends Component {
 						<Router>
 							<Home path="/" />
 							<SingleEvent path="/events/:slug" />
+							<AccountSettings path="/accountSettings" />
 						</Router>
 					</div>
 				</ThemeProvider>
