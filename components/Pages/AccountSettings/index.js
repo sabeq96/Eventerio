@@ -1,5 +1,5 @@
 import { Component } from 'preact';
-import { Button, Card, CardBody, CardFooter, CardHeader, TextField } from 'preact-fluid';
+import { Button, Card, CardBody, CardHeader, TextField } from 'preact-fluid';
 import linkstate from 'linkstate';
 
 import { withStore, actions } from '../../../utils/store';
