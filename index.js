@@ -10,6 +10,7 @@ import Nav from './components/Nav';
 
 import Home from './containers/Home';
 import SingleEvent from './components/Pages/SingleEvent';
+import AddModEvent from './components/Pages/AddModEvent';
 import AccountSettings from './components/Pages/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
@@ -54,6 +55,7 @@ class App extends Component {
 						<Router>
 							<Home path="/" />
 							<SingleEvent path="/events/:slug" />
+							<AddModEvent path="/addModEvent/:slug" />
 							<AccountSettings path="/accountSettings" />
 						</Router>
 					</div>
