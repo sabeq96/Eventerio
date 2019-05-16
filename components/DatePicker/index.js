@@ -121,7 +121,7 @@ class PreactFlatpickr extends Component {
     		: (
     			<div>
     				<input {...props} defaultValue={defaultValue}	ref={this.bindNode} />
-    				<Icon name="pen" size="small" />
+    				<Icon name="pen" size="small" style={{ marginLeft: 10 }} />
     			</div>
     		);
     }

@@ -1,5 +1,5 @@
 import { Component } from 'preact';
-import { Button, Image, Icon, Animate, Card, CardBody, CardHeader } from 'preact-fluid';
+import { Image, Icon, Card, CardBody, CardHeader } from 'preact-fluid';
 import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
 import linkstate from 'linkstate';
@@ -10,32 +10,11 @@ const TextArea = ({ children, style, name }) => (
 	</textarea>
 );
 
-const JoinButton = () => (
-	<div style={styles.joinButton}>
-		<Animate
-			component={
-				<Button rounded left={<Icon name="check" size="xsmall" />}>
-					<span>Join us !</span>
-				</Button>
-			}
-			animation={{
-				name: 'pulseShadow',
-				duration: '3s',
-				iterationCount: 'infinite',
-				timingFunction: 'linear'
-			}}
-		/>
-	</div>
-);
-
-const EventInfo = ({ label, content, children }) => (
+const EventInfo = ({ label, children }) => (
 	<div style={styles.card.cardInfoWrapper}>
 		<span style={styles.card.cardInfoDesc}>{label}</span>
 		{children && (
-			{ children }
-		)}
-		{content && (
-			<p style={styles.card.cardInfoText}>{content}</p>
+			<div>{ children }</div>
 		)}
 	</div>
 );
@@ -69,7 +48,6 @@ const EventHeader = ({ title, children, image, bodyWidth }) => (
 		>
 			{title}
 			{children}
-			<Button primary left={<Icon name="check" size="xsmall" />}>JOIN!</Button>
 		</div>
 		<div
 			style={{
@@ -199,23 +177,32 @@ class Home extends Component {
 					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} onChange={() => {linkstate(this, 'eventInfo.description');}}>
 						{eventInfo.description}
 					</TextArea>
-					<JoinButton />
 				</SectionWithHeader>
+				<div style={styles.fab}>
+					<Icon
+						name="plus"
+						size="large"
+						color="white"
+					/>
+				</div>
 			</div>
 		);
 	}
 }
 
 const styles = {
+	fab: {
+		padding: '10px',
+		borderRadius: '50%',
+		background: '#5A33A7',
+		position: 'fixed',
+		bottom: 10,
+		right: 10
+	},
 	textArea: {
 		background: 'rgba(240,240,240,.3)',
 		maxWidth: '100%',
 		minWidth: '100%'
-	},
-	joinButton: {
-		display: 'flex',
-		justifyContent: 'center',
-		margin: '20px'
 	},
 	card: {
 		avatarImage: {
