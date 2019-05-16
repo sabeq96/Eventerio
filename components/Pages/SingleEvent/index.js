@@ -163,7 +163,6 @@ const styles = {
 	joinButton: {
 		display: 'flex',
 		justifyContent: 'center',
-		width: '100%',
 		margin: '20px'
 	},
 	card: {

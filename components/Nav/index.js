@@ -14,8 +14,8 @@ const links = [{
 	name: 'Home Page',
 	path: '/'
 }, {
-	name: 'Home Page',
-	path: '/'
+	name: 'Account settings',
+	path: '/accountSettings'
 }];
 
 const InstallButton = ({ showButton, onClick }) => (

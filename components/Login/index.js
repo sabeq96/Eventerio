@@ -113,7 +113,7 @@ class LoginModal extends Component {
 
 							{ store.modalType === 'SIGNIN' && (
 								<div style={styles.linkWrapper} onClick={this.changeContentTypeToLogIn}>
-									You arleady have account? <span style={styles.link}>Log In</span>
+									You already have account? <span style={styles.link}>Log In</span>
 								</div>
 							)}
 						</form>
