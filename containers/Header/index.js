@@ -26,7 +26,7 @@ class Header extends Component {
 	
 	render({ openSidenav, store: { user, showLoader, modalType } }) {
 		return (
-			<div>
+			<div style={styles.wrapper}>
 				<AppBar
 					openSidenav={openSidenav}
 					user={user}
@@ -43,5 +43,14 @@ class Header extends Component {
 		);
 	}
 }
+
+const styles = {
+	wrapper: {
+		position: 'fixed',
+		top: 0,
+		zIndex: 100,
+		width: '100%'
+	}
+};
 
 export default withStore(Header);

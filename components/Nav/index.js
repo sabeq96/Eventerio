@@ -33,7 +33,7 @@ const InstallButton = ({ showButton, onClick }) => (
 );
 
 const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton, opened }) => (
-	<OutsideClickHandler onClickOutside={opened && closeSidenav} id="sidebarList">
+	<OutsideClickHandler onClickOutside={opened && closeSidenav} id="sidebarList" style={styles.sidebarWrapper}>
 		<List style={styles.list}>
 			<ListHeader
 				custom={
@@ -72,12 +72,15 @@ const styles = {
 	text: {
 		marginRight: '5px'
 	},
+	sidebarWrapper: {
+		display: 'flex',
+		alignItems: 'stretch',
+		height: '100%'
+	},
 	list: {
-		margin: '3px',
-		width: '200px',
 		position: 'relative',
-		minHeight: 'calc(100vh - 10px)',
-		boxSizing: 'border-box',
+		margin: '3px',
+		width: '194px',
 		paddingBottom: '70px'
 	},
 	installButton: {

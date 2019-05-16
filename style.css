@@ -15,5 +15,11 @@ div {
 .container {
 	padding: 35px;
 	max-width: 1170px;
-	margin: 0 auto;
+	margin: 60px auto 0 auto;
+}
+
+md-sidenav {
+	width: 200px !important;
+	position: fixed !important;
+	top: 60px !important;
 }
