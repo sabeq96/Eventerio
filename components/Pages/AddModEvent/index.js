@@ -4,8 +4,8 @@ import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
 import linkstate from 'linkstate';
 
-const TextArea = ({ children, style, name }) => (
-	<textarea style={{ ...style, ...styles.textArea }} onChange={(e) => ({ name, value: e.target.value })}>
+const TextArea = ({ children, style, name, onChange }) => (
+	<textarea style={{ ...style, ...styles.textArea }} onChange={onChange}>
 		{children}
 	</textarea>
 );
@@ -111,12 +111,12 @@ class Home extends Component {
 			<div className="container">
 				<EventHeader
 					bodyWidth={this.state.bodyWidth}
-					title={<TextArea style={styles.header.coverHeader} onChange={() => {linkstate(this, 'eventInfo.name');}}>
+					title={<TextArea style={styles.header.coverHeader} onChange={linkstate(this, 'eventInfo.name')}>
 						{eventInfo.name}
 					</TextArea>}
 					image="https://upload.wikimedia.org/wikipedia/commons/4/4d/Kralicky-Sneznik-04.jpg"
 				>
-					<TextArea style={{ color: 'white' }} onChange={() => {linkstate(this, 'eventInfo.shortDescription');}}>
+					<TextArea style={{ color: 'white' }} onChange={linkstate(this, 'eventInfo.shortDescription')}>
 						{eventInfo.shortDescription}
 					</TextArea>
 				</EventHeader>
@@ -130,7 +130,7 @@ class Home extends Component {
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
 										value={eventInfo.date.startDate}
-										onChange={() => {linkstate(this, 'eventInfo.date.startDate');}}
+										onChange={linkstate(this, 'eventInfo.date.startDate')}
 										theme="material_blue"
 										className="datePicker"
 									/>
@@ -141,7 +141,7 @@ class Home extends Component {
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
 										value={eventInfo.date.endDate}
-										onChange={() => {linkstate(this, 'eventInfo.date.endDate');}}
+										onChange={linkstate(this, 'eventInfo.date.endDate')}
 										theme="material_blue"
 										className="datePicker"
 									/>
@@ -151,9 +151,19 @@ class Home extends Component {
 								>
 									<TextArea
 										style={{ ...styles.card.cardInfoText, resize: 'none' }}
-										onChange={() => {linkstate(this, 'eventInfo.address');}}
+										onChange={linkstate(this, 'eventInfo.address')}
 									>
 										{eventInfo.address}
+									</TextArea>
+								</EventInfo>
+								<EventInfo
+									label="Contact details:"
+								>
+									<TextArea
+										style={{ ...styles.card.cardInfoText, resize: 'none' }}
+										onChange={linkstate(this, 'eventInfo.contactDetails')}
+									>
+										{eventInfo.contactDetails}
 									</TextArea>
 								</EventInfo>
 								<EventOwnerDetails
@@ -174,7 +184,7 @@ class Home extends Component {
 					</Cell>
 				</Grid>
 				<SectionWithHeader title="Description">
-					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} onChange={() => {linkstate(this, 'eventInfo.description');}}>
+					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} onChange={linkstate(this, 'eventInfo.description')}>
 						{eventInfo.description}
 					</TextArea>
 				</SectionWithHeader>
@@ -182,6 +192,7 @@ class Home extends Component {
 					<Icon
 						name="plus"
 						size="large"
+						onClick={() => {console.log(this.state);}}
 						color="white"
 					/>
 				</div>
