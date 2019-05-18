@@ -132,6 +132,7 @@ class AddModEvent extends Component {
 								>
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
+										options={{ disableMobile: true }}
 										value={eventInfo.date.startDate}
 										onChange={linkstate(this, 'eventInfo.date.startDate')}
 										theme="material_blue"
@@ -143,6 +144,7 @@ class AddModEvent extends Component {
 								>
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
+										options={{ disableMobile: true }}
 										value={eventInfo.date.endDate}
 										onChange={linkstate(this, 'eventInfo.date.endDate')}
 										theme="material_blue"
