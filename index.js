@@ -10,7 +10,7 @@ import Nav from './components/Nav';
 
 import Home from './containers/Home';
 import SingleEvent from './components/Pages/SingleEvent';
-import AddModEvent from './components/Pages/AddModEvent';
+import AddModEvent from './containers/AddModEvent';
 import AccountSettings from './components/Pages/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';

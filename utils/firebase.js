@@ -77,7 +77,6 @@ class Firebase {
 
 			return this.db.ref().update(updates);
 		}
-
 	}
 
 	logIn = (email, password) => (
@@ -91,6 +90,45 @@ class Firebase {
 	updatePassword = (password) => (
 		this.auth.currentUser.updatePassword(password)
 	)
+
+	setEvent = ({ address, contactDetails, date = {}, description, name, shortDescription }) => {
+		const key = this.db.ref().child('events').push().key;
+		const user = this.auth.currentUser.uid;
+
+		return this.db.ref('events/' + key).set({
+			ownerId: user,
+			address: address || '',
+			contactDetails: contactDetails || '',
+			date: {
+				startDate: date.startDate || new Date(),
+				endDate: date.endDate || new Date()
+			},
+			description: description || '',
+			name: name || '',
+			shortDescription: shortDescription || ''
+		});
+	}
+
+	updateEvent = ({ id, address, contactDetails, date, description, name, shortDescription }) => {
+		const user = this.auth.currentUser;
+		const eventId = id || this.db.ref().child('events').push().key;
+		const eventPath = `events/${eventId}`;
+		const updates = {};
+
+		updates[eventPath + '/ownerId'] = user.uid;
+
+		if (address) updates[eventPath + '/address'] = address;
+		if (contactDetails) updates[eventPath + '/contactDetails'] = contactDetails;
+		if (date) {
+			if (date.startDate) updates[eventPath + '/date/startDate'] = date.startDate;
+			if (date.endDate) updates[eventPath + '/date/endDate'] = date.endDate;
+		}
+		if (description) updates[eventPath + '/description'] = description;
+		if (name) updates[eventPath + '/name'] = name;
+		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;
+
+		return this.db.ref().update(updates);
+	}
 
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {

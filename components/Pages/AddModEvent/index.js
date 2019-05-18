@@ -74,7 +74,7 @@ const SectionWithHeader = ({ children, title }) => (
 	</div>
 );
 
-class Home extends Component {
+class AddModEvent extends Component {
 	setBodyWidth = () => {
 		this.setState({ bodyWidth: document.body.offsetWidth });
 	}
@@ -100,17 +100,20 @@ class Home extends Component {
 
 	componentDidMount() {
 		window.addEventListener('resize', this.setBodyWidth);
+		if (this.props.eventInfo) {
+			this.setState({ eventInfo: this.props.eventInfo });
+		}
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render(props, { bodyWidth, eventInfo }) {
+	render({ onConfirm }, { bodyWidth, eventInfo }) {
 		return (
 			<div className="container">
 				<EventHeader
-					bodyWidth={this.state.bodyWidth}
+					bodyWidth={bodyWidth}
 					title={<TextArea style={styles.header.coverHeader} onChange={linkstate(this, 'eventInfo.name')}>
 						{eventInfo.name}
 					</TextArea>}
@@ -192,7 +195,7 @@ class Home extends Component {
 					<Icon
 						name="plus"
 						size="large"
-						onClick={() => {console.log(this.state);}}
+						onClick={() => {onConfirm(eventInfo);}}
 						color="white"
 					/>
 				</div>
@@ -290,4 +293,4 @@ const styles = {
 	}
 };
 
-export default Home;
+export default AddModEvent;
