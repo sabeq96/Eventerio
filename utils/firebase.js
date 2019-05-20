@@ -92,6 +92,13 @@ class Firebase {
 		this.auth.currentUser.updatePassword(password)
 	)
 
+	reauthenticateUser = (password) => {
+		const user = this.auth.currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+
+		return user.reauthenticateAndRetrieveDataWithCredential(credential);
+	}
+
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {
 		this.auth.onAuthStateChanged((user) => {

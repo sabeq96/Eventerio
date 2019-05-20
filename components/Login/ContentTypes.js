@@ -1,7 +1,7 @@
 import { TextField } from 'preact-fluid';
 
 
-const ContentTypes = ({ contentType, onChange, values: { email, password, confirmPassword, error } }) => {
+const ContentTypes = ({ contentType, onChange, values: { email, oldPassword, password, confirmPassword, error } }) => {
 	switch (contentType) {
 		case 'LOGIN' : {
 			return (
@@ -63,6 +63,13 @@ const ContentTypes = ({ contentType, onChange, values: { email, password, confir
 		case 'CHANGE_PASSWORD' : {
 			return (
 				<div>
+					<TextField
+						type="password"
+						label="old password"
+						onChange={onChange('oldPassword')}
+						value={oldPassword}
+						style={{ marginTop: '20px' }}
+					/>
 					<TextField
 						type="password"
 						label="password"
