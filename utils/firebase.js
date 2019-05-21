@@ -129,6 +129,13 @@ class Firebase {
 
 		return this.db.ref().update(updates);
 	}
+	
+		reauthenticateUser = (password) => {
+			const user = this.auth.currentUser;
+			const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+
+			return user.reauthenticateAndRetrieveDataWithCredential(credential);
+		}
 
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {
@@ -147,9 +154,9 @@ class Firebase {
 		});
 	}
 
-	uploadFile(file) {
+	uploadFile(file, directory) {
 		const filename = new Date().getTime().toString();
-		const imageRef = this.storage.ref().child(filename);
+		const imageRef = this.storage.ref(directory).child(filename);
 
 		return imageRef.put(file);
 	}

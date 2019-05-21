@@ -16,13 +16,7 @@ class AccountSettings extends Component {
 	handleFileChange = (e) => {
 		const file = e.target.files[0];
 
-		this.setState({
-			user: {
-				...this.state.user,
-				avatarUrl: URL.createObjectURL(file)
-			},
-			file
-		});
+		this.setState({ file });
 	}
 
 	handleSave = () => {
@@ -34,9 +28,8 @@ class AccountSettings extends Component {
 		const { dispatch } = this.props;
 
 		dispatch({ type: actions.SHOW_LOADER, showLoader: true });
-		Firebase.updateUser(this.state.user).then(() => {
-			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
-		}).catch(error => {
+		
+		Firebase.updateUser(this.state.user).catch(error => {
 			this.setState({ error: error.message });
 		}).finally(() => {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
@@ -45,25 +38,27 @@ class AccountSettings extends Component {
 
 	saveUserDataWithAvatar = () => {
 		const { dispatch } = this.props;
+		const { name, surname, email, city, settings } = this.state.user;
 
 		dispatch({ type: actions.SHOW_LOADER, showLoader: true });
-		Firebase.uploadFile(this.state.file).then(snapshot => {
-			snapshot.ref.getDownloadURL().then(downloadURL => {
-				this.setState({
-					user: {
-						...this.state.user,
-						avatarUrl: downloadURL
-					},
-					file: null
-				}, () => {
-					Firebase.updateUser(this.state.user).then(() => {
-						dispatch({ type: actions.SHOW_LOADER, showLoader: false });
-					}).catch(error => {
-						this.setState({ error: error.message });
+
+		Firebase.uploadFile(this.state.file, 'avatars').then((snapshot) => {
+			snapshot.ref.getDownloadURL().then((avatarUrl) => {
+				Firebase.updateUser({ name, surname, email, city, settings, avatarUrl }).then(() => {
+					this.setState({
+						user: {
+							...this.state.user,
+							avatarUrl
+						},
+						file: null
 					});
+				}).catch((error) => {
+					this.setState({ error: error.message });
 				});
+			}).catch((error) => {
+				this.setState({ error: error.message });
 			});
-		}).catch(error => {
+		}).catch((error) => {
 			this.setState({ error: error.message });
 		}).finally(() => {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
@@ -88,8 +83,14 @@ class AccountSettings extends Component {
 		};
 	}
 
-	componentWillReceiveProps({ store: { user } }) {
-		if (user) this.setState({ user });
+	componentDidMount() {
+		Firebase.auth.onAuthStateChanged((user) => {
+			if (user) {
+				Firebase.getUser().then((user) => {
+					this.setState({ user });
+				});
+			}
+		});
 	}
 	
 	render(props, state) {
@@ -97,7 +98,7 @@ class AccountSettings extends Component {
 			<div className="container">
 				<Card middle center>
 					<CardHeader title="Account settings" />
-					<AvatarSection avatarUrl={state.user.avatarUrl} onChange={this.handleFileChange} />
+					<AvatarSection avatarUrl={state.file ? URL.createObjectURL(state.file) : state.user.avatarUrl} onChange={this.handleFileChange} />
 					<div style={styles.cardWrapper}>
 						<CardBody>
 							<div style={styles.textFieldWrapper}>
