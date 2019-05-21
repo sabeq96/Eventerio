@@ -116,9 +116,9 @@ class Firebase {
 		});
 	}
 
-	uploadFile(file) {
+	uploadFile(file, directory) {
 		const filename = new Date().getTime().toString();
-		const imageRef = this.storage.ref().child(filename);
+		const imageRef = this.storage.ref(directory).child(filename);
 
 		return imageRef.put(file);
 	}
