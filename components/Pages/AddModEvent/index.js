@@ -39,7 +39,7 @@ const EventOwnerDetails = ({ avatarUrl, userName }) => (
 	</Card>
 );
 
-const EventHeader = ({ title, children, image, bodyWidth }) => (
+const EventHeader = ({ title, children, image, bodyWidth, onChange }) => (
 	<div style={styles.header.headerWrapper}>
 		<div style={{
 			position: bodyWidth > 500 ? 'absolute' : 'static',
@@ -49,12 +49,15 @@ const EventHeader = ({ title, children, image, bodyWidth }) => (
 			{title}
 			{children}
 		</div>
-		<div
-			style={{
-				...styles.header.headerImage,
-				backgroundImage: `url('${image}')`
-			}}
-		/>
+		<label for="backgroundInput">
+			<div
+				style={{
+					...styles.header.headerImage,
+					backgroundImage: `url('${image}')`
+				}}
+			/>
+		</label>
+		<input type="file" id="backgroundInput" style={{ display: 'none' }} onChange={onChange} />
 	</div>
 );
 
@@ -79,12 +82,20 @@ class AddModEvent extends Component {
 		this.setState({ bodyWidth: document.body.offsetWidth });
 	}
 
+	backgroundChange = (e) => {
+		const file = e.target.files[0];
+	
+		this.setState({ file });
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			bodyWidth: document.body.offsetWidth,
+			file: null,
 			eventInfo: {
+				backgroundUrl: '',
 				address: '',
 				contactDetails: '',
 				date: {
@@ -109,7 +120,7 @@ class AddModEvent extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ onConfirm }, { bodyWidth, eventInfo }) {
+	render({ onConfirm }, { bodyWidth, eventInfo, file }) {
 		return (
 			<div className="container">
 				<EventHeader
@@ -117,7 +128,8 @@ class AddModEvent extends Component {
 					title={<TextArea style={styles.header.coverHeader} onChange={linkstate(this, 'eventInfo.name')}>
 						{eventInfo.name}
 					</TextArea>}
-					image="https://upload.wikimedia.org/wikipedia/commons/4/4d/Kralicky-Sneznik-04.jpg"
+					image={file ? URL.createObjectURL(file) : eventInfo.backgroundUrl}
+					onChange={this.backgroundChange}
 				>
 					<TextArea style={{ color: 'white' }} onChange={linkstate(this, 'eventInfo.shortDescription')}>
 						{eventInfo.shortDescription}
@@ -172,7 +184,7 @@ class AddModEvent extends Component {
 									</TextArea>
 								</EventInfo>
 								<EventOwnerDetails
-									avatarUrl="https://avatars1.githubusercontent.com/u/1182600?s=460&v=4"
+									avatarUrl="https://via.placeholder.com/120/?text=Avatar"
 									userName="Miroslaw Ticktack"
 								/>
 							</CardBody>

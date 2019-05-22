@@ -9,9 +9,9 @@ class AddModEvent extends Component {
 		const { dispatch } = this.props;
 		dispatch({ type: actions.SHOW_LOADER, showLoader: true });
 		Firebase.updateEvent(payload).then((resp) => {
-			console.log(resp);
+			// console.log(resp);
 		}).catch((err) => {
-			console.log(err);
+			// console.log(err);
 		}).finally(() => {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
 		});
