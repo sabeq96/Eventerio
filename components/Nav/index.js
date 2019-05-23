@@ -6,7 +6,7 @@ import './style';
 
 const links = [{
 	name: 'Test single Event',
-	path: '/events/123'
+	path: '/events/-LdU_ylvZD0OpsyjZXjg'
 }, {
 	name: 'Home Page',
 	path: '/'

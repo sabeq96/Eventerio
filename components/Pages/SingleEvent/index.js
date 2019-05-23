@@ -84,7 +84,7 @@ const SectionWithHeader = ({ children, title }) => (
 	</div>
 );
 
-class Home extends Component {
+class SingleEvent extends Component {
 	setBodyWidth = () => {
 		this.setState({ bodyWidth: document.body.offsetWidth });
 	}
@@ -105,31 +105,31 @@ class Home extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render(props, state) {
+	render({ name, photoUrl, shortDescription, startTime, address, organizerAvatarUrl, organizer, description }) {
 		return (
 			<div className="container">
 				<EventHeader
 					bodyWidth={this.state.bodyWidth}
-					title="Ekstremalna wyprawa w góry"
-					image="https://upload.wikimedia.org/wikipedia/commons/4/4d/Kralicky-Sneznik-04.jpg"
+					title={name}
+					image={photoUrl}
 				>
-					Krotki opis Irish girl and Irish boy. Is all you need to break toys. That's all you need. That's all you want.
+					{shortDescription}
 				</EventHeader>
 				<Grid gap={5} breakpoint={800}>
 					<Cell size={1}>
 						<Card middle center>
 							<CardBody>
 								<EventInfo
-									content="17 maj 2019"
+									content={startTime}
 									label="Date: "
 								/>
 								<EventInfo
-									content="ul. Warszawska 18, Zakopane"
+									content={address}
 									label="Address:"
 								/>
 								<EventOwnerDetails
-									avatarUrl="https://avatars1.githubusercontent.com/u/1182600?s=460&v=4"
-									userName="Miroslaw Ticktack"
+									avatarUrl={organizerAvatarUrl}
+									userName={organizer}
 								/>
 							</CardBody>
 						</Card>
@@ -145,9 +145,7 @@ class Home extends Component {
 					</Cell>
 				</Grid>
 				<SectionWithHeader title="Description">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sapien purus, vestibulum vitae massa sed, ornare consequat massa. Nam pharetra sagittis faucibus. Vivamus commodo consectetur euismod. Nulla mollis orci justo, sed placerat enim volutpat non. Cras in ultrices nibh. Ut varius erat eget leo hendrerit, vel placerat mauris rutrum. Nunc venenatis felis nec sollicitudin aliquam. Aliquam erat volutpat.<br /><br />
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo euismod orci vitae tempus. Sed tempus gravida varius. Suspendisse eget urna purus. Phasellus et turpis eros. Donec maximus dolor ac tempus ornare. Vestibulum orci erat, faucibus nec enim aliquet, vestibulum interdum libero. Pellentesque quis dolor vel lacus pretium malesuada auctor a magna. Cras ut condimentum nisi. In id dapibus nulla.<br /><br />
-					Donec nisl velit, laoreet a hendrerit non, dapibus non risus. Pellentesque ac lectus dui. Fusce massa orci, tempus sit amet lectus at, commodo finibus dolor. Ut posuere eu metus non vestibulum. Maecenas semper, orci mollis scelerisque tincidunt, erat justo interdum elit, eget porta lorem tellus id elit. Praesent luctus neque ac vestibulum venenatis. In justo sem, aliquam ut ligula sed, aliquam feugiat nisl. Sed sagittis sapien ex, ac tincidunt velit pellentesque a. Morbi elit arcu, imperdiet fringilla condimentum sed, vulputate a sapien. Etiam gravida ullamcorper libero, et consectetur neque rhoncus ut. Vivamus nunc erat, convallis nec lectus sit amet, ullamcorper maximus mauris. Etiam tempus est id convallis cursus.
+					{description}
 					<JoinButton />
 				</SectionWithHeader>
 				<SectionWithHeader title="Comments">
@@ -240,4 +238,4 @@ const styles = {
 	}
 };
 
-export default Home;
+export default SingleEvent;

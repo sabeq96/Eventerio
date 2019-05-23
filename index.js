@@ -9,7 +9,7 @@ import Header from './containers/Header';
 import Nav from './components/Nav';
 
 import Home from './containers/Home';
-import SingleEvent from './components/Pages/SingleEvent';
+import SingleEvent from './containers/SingleEvent';
 import AccountSettings from './containers/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
@@ -53,7 +53,7 @@ class App extends Component {
 						</Sidebar>
 						<Router>
 							<Home path="/" />
-							<SingleEvent path="/events/:slug" />
+							<SingleEvent path="/events/:eventId" />
 							<AccountSettings path="/accountSettings" />
 						</Router>
 					</div>
