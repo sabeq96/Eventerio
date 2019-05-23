@@ -4,6 +4,7 @@ import RightSection from './RightSection';
 
 const AppBar = ({ openSidenav, user, handleLogOut, showLoginModal }) => (
 	<HeaderAppBar
+		style={{ height: 80, padding: '0 5%' }}
 		primary
 		leftSection={<LeftSection openSidenav={openSidenav} />}
 		rightSection={

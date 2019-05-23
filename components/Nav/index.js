@@ -8,8 +8,8 @@ const links = [{
 	name: 'Test single Event',
 	path: '/events/-LdU_ylvZD0OpsyjZXjg'
 }, {
-	name: 'Home Page',
-	path: '/'
+	name: 'Add Mod Event',
+	path: '/addModEvent/-LdU_ylvZD0OpsyjZXjg'
 }, {
 	name: 'Home Page',
 	path: '/'
