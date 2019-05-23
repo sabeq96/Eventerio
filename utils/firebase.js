@@ -125,7 +125,6 @@ class Firebase {
 		const eventId = id || this.db.ref().child('events').push().key;
 		const eventPath = `events/${eventId}`;
 		const updates = {};
-		console.log({ startTime, endTime });
 
 		updates[eventPath + '/ownerId'] = user.uid;
 
@@ -140,7 +139,7 @@ class Firebase {
 
 		if (!id) {
 			this.updateUser({ ownEventId: eventId }).then(() => {
-				console.log('ok');
+				// push to list
 			}).catch((err) => {console.log(err);});
 		}
 

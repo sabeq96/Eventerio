@@ -98,7 +98,6 @@ class AddModEvent extends Component {
 	}
 
 	render({}, state) {
-		{console.log(state);}
 		return (
 			<AddModEventPage
 				onConfirm={this.onConfirm}

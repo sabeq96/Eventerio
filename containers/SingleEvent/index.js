@@ -53,7 +53,6 @@ class SingleEvent extends Component {
 
 	render(props, state) {
 		const { name, photoUrl, shortDescription, startTime, address, description, organizerAvatarUrl, organizer } = state;
-		console.log(state);
 		return (
 			<SingleEventPage
 				name={name}
