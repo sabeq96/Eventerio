@@ -24,7 +24,7 @@ class LoginModal extends Component {
 		const CONTENT_TYPES = {
 			SIGNIN: { key: 'SIGNIN', value: 'Sign In', action: this.handleSignIn },
 			LOGIN: { key: 'LOGIN', value: 'Log In', action: this.handleLogin },
-			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password' } // todo handle change pass
+			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password', action: this.handleChangePassword }
 		};
 
 		return type ? CONTENT_TYPES[type]: {};
@@ -33,6 +33,31 @@ class LoginModal extends Component {
 	hideModal = () => {
 		const { dispatch } = this.props;
 		dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: false });
+	}
+
+	handleChangePassword = (e) => {
+		e.preventDefault();
+		const { dispatch } = this.props;
+		const { oldPassword, password, confirmPassword } = this.state;
+		
+		if (password === confirmPassword) {
+			dispatch({ type: actions.SHOW_LOADER, showLoader: true });
+
+			Firebase.reauthenticateUser(oldPassword).then(() => {
+				Firebase.updatePassword(password).then(() => {
+					dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: false });
+				}).catch((error) => {
+					this.setState({ error: error.message });
+				});
+			}).catch((error) => {
+				this.setState({ error: error.message });
+			}).finally(() => {
+				dispatch({ type: actions.SHOW_LOADER, showLoader: false });
+			});
+		}
+		else {
+			this.setState({ error: errorMessages.passwordsNotEqual });
+		}
 	}
 
 	handleLogin = (e) => {
@@ -75,13 +100,14 @@ class LoginModal extends Component {
 
 		this.state = {
 			email: '',
+			oldPassword: '',
 			password: '',
 			confirmPassword: '',
 			error: null
 		};
 	}
 
-	render({ store }, { email, password, confirmPassword, error }) {
+	render({ store }, { email, oldPassword, password, confirmPassword, error }) {
 		return (
 			<div style={styles.loginModalWrapper}>
 				<OutsideClickHandler onClickOutside={this.hideModal} id="loginModal">
@@ -90,7 +116,7 @@ class LoginModal extends Component {
 						<form>
 							<CardBody>
 								<ContentTypes
-									values={{ email, password, confirmPassword, error }}
+									values={{ email, oldPassword, password, confirmPassword, error }}
 									contentType={store.modalType}
 									onChange={(fieldName) => linkstate(this, fieldName)} // eslint-disable-line
 								/>
@@ -113,7 +139,7 @@ class LoginModal extends Component {
 
 							{ store.modalType === 'SIGNIN' && (
 								<div style={styles.linkWrapper} onClick={this.changeContentTypeToLogIn}>
-									You arleady have account? <span style={styles.link}>Log In</span>
+									You already have account? <span style={styles.link}>Log In</span>
 								</div>
 							)}
 						</form>

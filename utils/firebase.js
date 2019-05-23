@@ -16,6 +16,7 @@ class Firebase {
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
 		this.db = firebase.database();
+		this.storage = firebase.storage();
 	}
 
 	createUser = (email, password) => (
@@ -50,6 +51,22 @@ class Firebase {
 		})
 	);
 
+	getEvent(id) {
+		return this.db.ref(`/events/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.eventNotFound })
+		));
+	}
+
+	getEventOrganizer(id) {
+		return this.db.ref(`/users/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.userNotFound })
+		));
+	}
+
 	getUser = () => {
 		const user = this.auth.currentUser;
 		if (user) {
@@ -61,22 +78,32 @@ class Firebase {
 		}
 	}
 
-	updateUser = ({ avatarUrl, city, name, surname, email, settings }) => {
+	updateUser = ({ avatarUrl, city, name, surname, email, settings, ownEventId }) => {
 		const user = this.auth.currentUser;
 		if (user) {
 			const userPath = `users/${user.uid}`;
 			const updates = {};
-			if (avatarUrl) updates[userPath + 'avatarUrl'] = avatarUrl;
-			if (city) updates[userPath + 'city'] = city;
-			if (name) updates[userPath + 'name'] = name;
-			if (surname) updates[userPath + 'surname'] = surname;
-			if (email) updates[userPath + 'email'] = email;
-			if (settings.eventsMaxDistance)
-				updates[userPath + 'settings/eventsMaxDistance'] = settings.eventsMaxDistance;
+			if (avatarUrl) updates[userPath + '/avatarUrl'] = avatarUrl;
+			if (city) updates[userPath + '/city'] = city;
+			if (name) updates[userPath + '/name'] = name;
+			if (surname) updates[userPath + '/surname'] = surname;
+			if (email) updates[userPath + '/email'] = email;
+			if (settings && settings.eventsMaxDistance)
+				updates[userPath + '/settings/eventsMaxDistance'] = settings.eventsMaxDistance;
 
-			this.db.ref().update(updates);
+
+			// id ownEventId passed and exist in db => delete it
+			// id ownEventId passed and doesn't exist => add it
+			if (ownEventId) {
+				this.db.ref(userPath + '/ownEvents').once('value').then((snapshot) => {
+					snapshot.val() && snapshot.val()[ownEventId] ?
+						this.db.ref(userPath + '/ownEvents/' + ownEventId).remove()
+						: this.db.ref(userPath + '/ownEvents/').child(ownEventId).set(true);
+				});
+			}
+
+			return this.db.ref().update(updates);
 		}
-
 	}
 
 	logIn = (email, password) => (
@@ -90,6 +117,45 @@ class Firebase {
 	updatePassword = (password) => (
 		this.auth.currentUser.updatePassword(password)
 	)
+
+	// if id passed update event
+	// if no id, autogenerate and add to ownEvents auto
+	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
+		const user = this.auth.currentUser;
+		const eventId = id || this.db.ref().child('events').push().key;
+		const eventPath = `events/${eventId}`;
+		const updates = {};
+
+		updates[eventPath + '/ownerId'] = user.uid;
+
+		if (address) updates[eventPath + '/address'] = address;
+		if (contactDetails) updates[eventPath + '/contactDetails'] = contactDetails;
+		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime[0]).getTime();
+		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime[0]).getTime();
+		if (description) updates[eventPath + '/description'] = description;
+		if (name) updates[eventPath + '/name'] = name;
+		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;
+		if (photoUrl) updates[eventPath + '/photoUrl'] = photoUrl;
+
+		if (!id) {
+			this.updateUser({ ownEventId: eventId }).then(() => {
+				// push to list
+			}).catch((err) => {console.log(err);});
+		}
+
+		return this.db.ref().update(updates);
+	}
+
+	deleteEvent = (ownEventId) => (
+		this.updateUser({ ownEventId })
+	);
+	
+	reauthenticateUser = (password) => {
+		const user = this.auth.currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+
+		return user.reauthenticateAndRetrieveDataWithCredential(credential);
+	}
 
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {
@@ -106,6 +172,13 @@ class Firebase {
 			}
 			else dispatch({ type: actions.LOGOUT });
 		});
+	}
+
+	uploadFile(file, directory) {
+		const filename = new Date().getTime().toString();
+		const imageRef = this.storage.ref(directory).child(filename);
+
+		return imageRef.put(file);
 	}
 
 }

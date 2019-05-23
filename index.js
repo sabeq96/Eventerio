@@ -5,12 +5,14 @@ import { Provider } from 'statty';
 import { ThemeProvider } from 'preact-fluid';
 
 import Sidebar from 'preact-sidenav';
-import Header from './components/Header';
+import Header from './containers/Header';
 import Nav from './components/Nav';
 
 import Home from './containers/Home';
-import SingleEvent from './components/Pages/SingleEvent';
 import EventList from './components/Pages/EventList';
+import AddModEvent from './containers/AddModEvent';
+import SingleEvent from './containers/SingleEvent';
+import AccountSettings from './containers/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
 import { initialState } from './utils/store';
@@ -53,8 +55,10 @@ class App extends Component {
 						</Sidebar>
 						<Router>
 							<Home path="/" />
-							<SingleEvent path="/events/:slug" />
 							<EventList path="/events/" />
+							<AddModEvent path="/addModEvent/:slug" />
+							<SingleEvent path="/events/:eventId" />
+							<AccountSettings path="/accountSettings" />
 						</Router>
 					</div>
 				</ThemeProvider>

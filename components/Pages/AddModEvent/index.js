@@ -1,30 +1,20 @@
 import { Component } from 'preact';
-import { Button, Image, Icon, Animate, Card, CardBody, CardHeader } from 'preact-fluid';
+import { Image, Icon, Card, CardBody, CardHeader } from 'preact-fluid';
+import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
-import 'style';
 
-const JoinButton = () => (
-	<div style={styles.joinButton}>
-		<Animate
-			component={
-				<Button rounded left={<Icon name="check" size="xsmall" />}>
-					<span>Join us !</span>
-				</Button>
-			}
-			animation={{
-				name: 'pulseShadow',
-				duration: '3s',
-				iterationCount: 'infinite',
-				timingFunction: 'linear'
-			}}
-		/>
-	</div>
+const TextArea = ({ children, style, name, onChange }) => (
+	<textarea style={{ ...style, ...styles.textArea }} onChange={(e) => onChange(name, e.target.value)}>
+		{children}
+	</textarea>
 );
 
-const EventInfo = ({ label, content }) => (
+const EventInfo = ({ label, children }) => (
 	<div style={styles.card.cardInfoWrapper}>
 		<span style={styles.card.cardInfoDesc}>{label}</span>
-		<p style={styles.card.cardInfoText}>{content}</p>
+		{children && (
+			<div>{ children }</div>
+		)}
 	</div>
 );
 
@@ -48,23 +38,25 @@ const EventOwnerDetails = ({ avatarUrl, userName }) => (
 	</Card>
 );
 
-const EventHeader = ({ title, children, image, bodyWidth }) => (
+const EventHeader = ({ title, children, image, bodyWidth, onChange }) => (
 	<div style={styles.header.headerWrapper}>
 		<div style={{
 			position: bodyWidth > 500 ? 'absolute' : 'static',
 			...styles.header.coverWrapper
 		}}
 		>
-			<h1 style={styles.header.coverHeader}>{title}</h1>
-			<p> {children} </p>
-			<Button primary left={<Icon name="check" size="xsmall" />}>JOIN!</Button>
+			{title}
+			{children}
 		</div>
-		<div
-			style={{
-				...styles.header.headerImage,
-				backgroundImage: `url('${image}')`
-			}}
-		/>
+		<label for="backgroundInput">
+			<div
+				style={{
+					...styles.header.headerImage,
+					backgroundImage: `url('${image}')`
+				}}
+			/>
+		</label>
+		<input type="file" id="backgroundInput" style={{ display: 'none' }} onChange={onChange} />
 	</div>
 );
 
@@ -78,22 +70,23 @@ const SectionWithHeader = ({ children, title }) => (
 			{title}
 		</div>
 		<div style={styles.eventSection.line} />
-		<div style={styles.eventSection.body}>
+		<div>
 			{children}
 		</div>
 	</div>
 );
 
-class SingleEvent extends Component {
+class AddModEvent extends Component {
 	setBodyWidth = () => {
 		this.setState({ bodyWidth: document.body.offsetWidth });
 	}
-	
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			bodyWidth: document.body.offsetWidth
+			bodyWidth: document.body.offsetWidth,
+			file: null
 		};
 	}
 
@@ -105,31 +98,75 @@ class SingleEvent extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ name, photoUrl, shortDescription, startTime, address, organizerAvatarUrl, organizer, description }) {
+	render(props, { bodyWidth }) {
 		return (
 			<div className="container">
 				<EventHeader
-					bodyWidth={this.state.bodyWidth}
-					title={name}
-					image={photoUrl}
+					bodyWidth={bodyWidth}
+					title={<TextArea style={styles.header.coverHeader} name="name" onChange={props.onChange}>
+						{props.name}
+					</TextArea>}
+					image={props.file ? URL.createObjectURL(props.file) : props.photoUrl}
+					onChange={props.backgroundChange}
 				>
-					{shortDescription}
+					<TextArea style={{ color: 'white' }} name="shortDescription" onChange={props.onChange}>
+						{props.shortDescription}
+					</TextArea>
 				</EventHeader>
 				<Grid gap={5} breakpoint={800}>
 					<Cell size={1}>
 						<Card middle center>
 							<CardBody>
 								<EventInfo
-									content={startTime}
-									label="Date: "
-								/>
+									label="Start date: "
+								>
+									<DatePicker
+										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
+										options={{ disableMobile: true }}
+										value={props.startTime}
+										onChange={(val) => props.onChange('startTime', val)}
+										theme="material_blue"
+										className="datePicker"
+									/>
+								</EventInfo>
 								<EventInfo
-									content={address}
+									label="End date: "
+								>
+									<DatePicker
+										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
+										options={{ disableMobile: true }}
+										name="endTime"
+										value={props.endTime}
+										onChange={(val) => props.onChange('endTime', val)}
+										theme="material_blue"
+										className="datePicker"
+									/>
+								</EventInfo>
+								<EventInfo
 									label="Address:"
-								/>
+								>
+									<TextArea
+										style={{ ...styles.card.cardInfoText, resize: 'none' }}
+										name="address"
+										onChange={props.onChange}
+									>
+										{props.address}
+									</TextArea>
+								</EventInfo>
+								<EventInfo
+									label="Contact details:"
+								>
+									<TextArea
+										style={{ ...styles.card.cardInfoText, resize: 'none' }}
+										name="contactDetails"
+										onChange={props.onChange}
+									>
+										{props.contactDetails}
+									</TextArea>
+								</EventInfo>
 								<EventOwnerDetails
-									avatarUrl={organizerAvatarUrl}
-									userName={organizer}
+									avatarUrl={props.organizerAvatarUrl}
+									userName={props.organizer}
 								/>
 							</CardBody>
 						</Card>
@@ -145,23 +182,36 @@ class SingleEvent extends Component {
 					</Cell>
 				</Grid>
 				<SectionWithHeader title="Description">
-					{description}
-					<JoinButton />
+					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} name="description" onChange={props.onChange}>
+						{props.description}
+					</TextArea>
 				</SectionWithHeader>
-				<SectionWithHeader title="Comments">
-					Tak lub nie?
-				</SectionWithHeader>
-
+				<div style={styles.fab}>
+					<Icon
+						name="plus"
+						size="large"
+						onClick={props.onConfirm}
+						color="white"
+					/>
+				</div>
 			</div>
 		);
 	}
 }
 
 const styles = {
-	joinButton: {
-		display: 'flex',
-		justifyContent: 'center',
-		margin: '20px'
+	fab: {
+		padding: '10px',
+		borderRadius: '50%',
+		background: '#5A33A7',
+		position: 'fixed',
+		bottom: 10,
+		right: 10
+	},
+	textArea: {
+		background: 'rgba(240,240,240,.3)',
+		maxWidth: '100%',
+		minWidth: '100%'
 	},
 	card: {
 		avatarImage: {
@@ -205,9 +255,9 @@ const styles = {
 			backgroundImage: 'linear-gradient(to right, #ff3776, #e42388, #c02198, #932aa3, #5a33a7)'
 		},
 		coverHeader: {
-			margin: '10px',
 			fontSize: '32px',
 			fontWeight: 500,
+			color: '#FFF',
 			textShadow: '0 0 12px #000'
 		}
 	},
@@ -238,4 +288,4 @@ const styles = {
 	}
 };
 
-export default SingleEvent;
+export default AddModEvent;
