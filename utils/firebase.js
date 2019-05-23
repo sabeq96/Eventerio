@@ -51,6 +51,22 @@ class Firebase {
 		})
 	);
 
+	getEvent(id) {
+		return this.db.ref(`/events/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.eventNotFound })
+		));
+	}
+
+	getEventOrganizer(id) {
+		return this.db.ref(`/users/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.userNotFound })
+		));
+	}
+
 	getUser = () => {
 		const user = this.auth.currentUser;
 		if (user) {
