@@ -51,6 +51,22 @@ class Firebase {
 		})
 	);
 
+	getEvent(id) {
+		return this.db.ref(`/events/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.eventNotFound })
+		));
+	}
+
+	getEventOrganizer(id) {
+		return this.db.ref(`/users/${id}`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch(() => (
+			Promise.reject({ message: errorMessages.userNotFound })
+		));
+	}
+
 	getUser = () => {
 		const user = this.auth.currentUser;
 		if (user) {
@@ -104,23 +120,23 @@ class Firebase {
 
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto
-	updateEvent = ({ id, address, contactDetails, date, description, name, shortDescription, backgroundUrl }) => {
+	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
 		const user = this.auth.currentUser;
 		const eventId = id || this.db.ref().child('events').push().key;
 		const eventPath = `events/${eventId}`;
 		const updates = {};
+		console.log({ startTime, endTime });
 
 		updates[eventPath + '/ownerId'] = user.uid;
 
 		if (address) updates[eventPath + '/address'] = address;
 		if (contactDetails) updates[eventPath + '/contactDetails'] = contactDetails;
-		if (date) {
-			if (date.startDate) updates[eventPath + '/date/startDate'] = date.startDate;
-			if (date.endDate) updates[eventPath + '/date/endDate'] = date.endDate;
-		}
+		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime[0]).getTime();
+		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime[0]).getTime();
 		if (description) updates[eventPath + '/description'] = description;
 		if (name) updates[eventPath + '/name'] = name;
 		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;
+		if (photoUrl) updates[eventPath + '/photoUrl'] = photoUrl;
 
 		if (!id) {
 			this.updateUser({ ownEventId: eventId }).then(() => {

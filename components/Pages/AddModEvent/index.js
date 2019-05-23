@@ -2,10 +2,9 @@ import { Component } from 'preact';
 import { Image, Icon, Card, CardBody, CardHeader } from 'preact-fluid';
 import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
-import linkstate from 'linkstate';
 
 const TextArea = ({ children, style, name, onChange }) => (
-	<textarea style={{ ...style, ...styles.textArea }} onChange={onChange}>
+	<textarea style={{ ...style, ...styles.textArea }} onChange={(e) => onChange(name, e.target.value)}>
 		{children}
 	</textarea>
 );
@@ -82,57 +81,36 @@ class AddModEvent extends Component {
 		this.setState({ bodyWidth: document.body.offsetWidth });
 	}
 
-	backgroundChange = (e) => {
-		const file = e.target.files[0];
-	
-		this.setState({ file });
-	}
-
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			bodyWidth: document.body.offsetWidth,
-			file: null,
-			eventInfo: {
-				backgroundUrl: '',
-				address: '',
-				contactDetails: '',
-				date: {
-					startDate: new Date(),
-					endDate: new Date()
-				},
-				description: '',
-				name: '',
-				shortDescription: ''
-			}
+			file: null
 		};
 	}
 
 	componentDidMount() {
 		window.addEventListener('resize', this.setBodyWidth);
-		if (this.props.eventInfo) {
-			this.setState({ eventInfo: this.props.eventInfo });
-		}
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ onConfirm }, { bodyWidth, eventInfo, file }) {
+	render(props, { bodyWidth }) {
 		return (
 			<div className="container">
 				<EventHeader
 					bodyWidth={bodyWidth}
-					title={<TextArea style={styles.header.coverHeader} onChange={linkstate(this, 'eventInfo.name')}>
-						{eventInfo.name}
+					title={<TextArea style={styles.header.coverHeader} name="name" onChange={props.onChange}>
+						{props.name}
 					</TextArea>}
-					image={file ? URL.createObjectURL(file) : eventInfo.backgroundUrl}
-					onChange={this.backgroundChange}
+					image={props.file ? URL.createObjectURL(props.file) : props.photoUrl}
+					onChange={props.backgroundChange}
 				>
-					<TextArea style={{ color: 'white' }} onChange={linkstate(this, 'eventInfo.shortDescription')}>
-						{eventInfo.shortDescription}
+					<TextArea style={{ color: 'white' }} name="shortDescription" onChange={props.onChange}>
+						{props.shortDescription}
 					</TextArea>
 				</EventHeader>
 				<Grid gap={5} breakpoint={800}>
@@ -145,8 +123,8 @@ class AddModEvent extends Component {
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
 										options={{ disableMobile: true }}
-										value={eventInfo.date.startDate}
-										onChange={linkstate(this, 'eventInfo.date.startDate')}
+										value={props.startTime}
+										onChange={(val) => props.onChange('startTime', val)}
 										theme="material_blue"
 										className="datePicker"
 									/>
@@ -157,8 +135,9 @@ class AddModEvent extends Component {
 									<DatePicker
 										style={{ ...styles.card.cardInfoText, border: 0, width: 120 }}
 										options={{ disableMobile: true }}
-										value={eventInfo.date.endDate}
-										onChange={linkstate(this, 'eventInfo.date.endDate')}
+										name="endTime"
+										value={props.endTime}
+										onChange={(val) => props.onChange('endTime', val)}
 										theme="material_blue"
 										className="datePicker"
 									/>
@@ -168,9 +147,10 @@ class AddModEvent extends Component {
 								>
 									<TextArea
 										style={{ ...styles.card.cardInfoText, resize: 'none' }}
-										onChange={linkstate(this, 'eventInfo.address')}
+										name="address"
+										onChange={props.onChange}
 									>
-										{eventInfo.address}
+										{props.address}
 									</TextArea>
 								</EventInfo>
 								<EventInfo
@@ -178,14 +158,15 @@ class AddModEvent extends Component {
 								>
 									<TextArea
 										style={{ ...styles.card.cardInfoText, resize: 'none' }}
-										onChange={linkstate(this, 'eventInfo.contactDetails')}
+										name="contactDetails"
+										onChange={props.onChange}
 									>
-										{eventInfo.contactDetails}
+										{props.contactDetails}
 									</TextArea>
 								</EventInfo>
 								<EventOwnerDetails
-									avatarUrl="https://via.placeholder.com/120/?text=Avatar"
-									userName="Miroslaw Ticktack"
+									avatarUrl={props.organizerAvatarUrl}
+									userName={props.organizer}
 								/>
 							</CardBody>
 						</Card>
@@ -201,15 +182,15 @@ class AddModEvent extends Component {
 					</Cell>
 				</Grid>
 				<SectionWithHeader title="Description">
-					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} onChange={linkstate(this, 'eventInfo.description')}>
-						{eventInfo.description}
+					<TextArea style={{ ...styles.eventSection.body, minHeight: 300 }} name="description" onChange={props.onChange}>
+						{props.description}
 					</TextArea>
 				</SectionWithHeader>
 				<div style={styles.fab}>
 					<Icon
 						name="plus"
 						size="large"
-						onClick={() => {onConfirm(eventInfo);}}
+						onClick={props.onConfirm}
 						color="white"
 					/>
 				</div>

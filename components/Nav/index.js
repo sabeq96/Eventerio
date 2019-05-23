@@ -6,10 +6,10 @@ import './style';
 
 const links = [{
 	name: 'Test single Event',
-	path: '/events/123'
+	path: '/events/-LdU_ylvZD0OpsyjZXjg'
 }, {
 	name: 'Add Mod Event',
-	path: '/addModEvent/123'
+	path: '/addModEvent/-LdU_ylvZD0OpsyjZXjg'
 }, {
 	name: 'Home Page',
 	path: '/'
