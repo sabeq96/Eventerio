@@ -10,7 +10,7 @@ import Nav from './components/Nav';
 
 import Home from './containers/Home';
 import SingleEvent from './containers/SingleEvent';
-import AccountSettings from './components/Pages/AccountSettings';
+import AccountSettings from './containers/AccountSettings';
 
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
 import { initialState } from './utils/store';
