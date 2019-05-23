@@ -9,6 +9,7 @@ import Header from './containers/Header';
 import Nav from './components/Nav';
 
 import Home from './containers/Home';
+import AddModEvent from './containers/AddModEvent';
 import SingleEvent from './containers/SingleEvent';
 import AccountSettings from './containers/AccountSettings';
 
@@ -53,6 +54,7 @@ class App extends Component {
 						</Sidebar>
 						<Router>
 							<Home path="/" />
+							<AddModEvent path="/addModEvent/:slug" />
 							<SingleEvent path="/events/:eventId" />
 							<AccountSettings path="/accountSettings" />
 						</Router>
