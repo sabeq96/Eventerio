@@ -52,7 +52,8 @@ class SingleEvent extends Component {
 	}
 
 	render(props, state) {
-		const { name, photoUrl, shortDescription, startTime, address, description, organizerAvatarUrl, organizer } = state;
+		const { name, photoUrl, shortDescription, startTime, address, coordinates, description, organizerAvatarUrl, organizer } = state;
+		
 		return (
 			<SingleEventPage
 				name={name}
@@ -62,6 +63,7 @@ class SingleEvent extends Component {
 				address={address}
 				organizerAvatarUrl={organizerAvatarUrl}
 				organizer={organizer}
+				coordinates={coordinates}
 				description={description}
 			/>
 		);

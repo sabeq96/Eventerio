@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import { Button, Image, Icon, Animate, Card, CardBody, CardHeader } from 'preact-fluid';
 import { Grid, Cell } from '../../Grid';
+import GoogleMap from '../../GoogleMap';
 import 'style';
 
 const JoinButton = () => (
@@ -68,10 +69,6 @@ const EventHeader = ({ title, children, image, bodyWidth }) => (
 	</div>
 );
 
-const EventMap = ({ url }) => (
-	<iframe src={url} width="100%" height="350px" frameborder="0" style="border:0" allowfullscreen />
-);
-
 const SectionWithHeader = ({ children, title }) => (
 	<div style={styles.eventSection.wrapper}>
 		<div style={styles.eventSection.title}>
@@ -105,7 +102,7 @@ class SingleEvent extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ name, photoUrl, shortDescription, startTime, address, organizerAvatarUrl, organizer, description }) {
+	render({ name, photoUrl, shortDescription, startTime, address, organizerAvatarUrl, organizer, coordinates, description }) {
 		return (
 			<div className="container">
 				<EventHeader
@@ -137,8 +134,9 @@ class SingleEvent extends Component {
 					<Cell size={2}>
 						<Card>
 							<CardBody>
-								<EventMap
-									url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d83296.89012681483!2d19.903836073576464!3d49.275870133474875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4715f29294ef3939%3A0xdf8d87a1716ba6a0!2sZakopane!5e0!3m2!1spl!2spl!4v1556994611817!5m2!1spl!2spl"
+								<GoogleMap
+									latitude={coordinates.latitude}
+									longitude={coordinates.longitude}
 								/>
 							</CardBody>
 						</Card>
