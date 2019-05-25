@@ -102,7 +102,7 @@ class SingleEvent extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ name, photoUrl, shortDescription, startTime, address, organizerAvatarUrl, organizer, coordinates, description }) {
+	render({ name, photoUrl, shortDescription, startTime, endTime, contactDetails, address, organizerAvatarUrl, organizer, coordinates, description }) {
 		return (
 			<div className="container">
 				<EventHeader
@@ -118,11 +118,19 @@ class SingleEvent extends Component {
 							<CardBody>
 								<EventInfo
 									content={startTime}
-									label="Date: "
+									label="Start time:"
+								/>
+                                <EventInfo
+									content={endTime}
+									label="End time:"
 								/>
 								<EventInfo
 									content={address}
 									label="Address:"
+								/>
+                                <EventInfo
+									content={contactDetails}
+									label="Contact details:"
 								/>
 								<EventOwnerDetails
 									avatarUrl={organizerAvatarUrl}

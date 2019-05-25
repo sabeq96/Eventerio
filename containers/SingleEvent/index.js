@@ -13,6 +13,8 @@ class SingleEvent extends Component {
 			shortDescription: '',
 			photoUrl: '',
 			startTime: '',
+			endTime: '',
+			contactDetails: '',
 			address: '',
 			coordinates: {
 				latitude: 0,
@@ -52,7 +54,7 @@ class SingleEvent extends Component {
 	}
 
 	render(props, state) {
-		const { name, photoUrl, shortDescription, startTime, address, coordinates, description, organizerAvatarUrl, organizer } = state;
+		const { name, photoUrl, shortDescription, startTime, endTime, contactDetails, address, coordinates, description, organizerAvatarUrl, organizer } = state;
 		
 		return (
 			<SingleEventPage
@@ -60,6 +62,8 @@ class SingleEvent extends Component {
 				photoUrl={photoUrl}
 				shortDescription={shortDescription}
 				startTime={new Date(startTime*1000).toLocaleDateString()}
+				endTime={new Date(endTime*1000).toLocaleDateString()}
+                contactDetails={contactDetails}
 				address={address}
 				organizerAvatarUrl={organizerAvatarUrl}
 				organizer={organizer}
