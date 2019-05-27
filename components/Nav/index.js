@@ -8,6 +8,9 @@ const links = [{
 	name: 'Test single Event',
 	path: '/events/-LdU_ylvZD0OpsyjZXjg'
 }, {
+	name: 'Test Event List',
+	path: '/events/'
+}, {
 	name: 'Add Mod Event',
 	path: '/addModEvent/-LdU_ylvZD0OpsyjZXjg'
 }, {
