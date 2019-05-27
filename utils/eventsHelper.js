@@ -4,8 +4,8 @@ import Geolocation from './geolocation';
 
 class EventsHelper {
 	constructor() {
-		this.geolocation = Geolocation;
 		this.firebase = Firebase;
+		this.geolocation = Geolocation;
 	}
 
 	isEventInArea(event, position, maxDistance) {

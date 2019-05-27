@@ -23,17 +23,17 @@ class Geolocation {
 	countDistanceBetweenCoordinates(latitude1, longitude1, latitude2, longitude2) {
 		const R = 6371; // Radius of the earth in km
 
-		const dLat = this.toRad(latitude2 - latitude1);
-		const dLon = this.toRad(longitude2 - longitude1);
+		const dLat = this.toRadians(latitude2 - latitude1);
+		const dLon = this.toRadians(longitude2 - longitude1);
 
-		const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(this.toRad(latitude1)) * Math.cos(this.toRad(latitude2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+		const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(this.toRadians(latitude1)) * Math.cos(this.toRadians(latitude2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		const d = R * c; // Distance in km
 		
 		return d;
 	}
 
-	toRad(value) {
+	toRadians(value) {
 		return value * Math.PI / 180;
 	}
 
