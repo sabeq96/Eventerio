@@ -33,14 +33,6 @@ class Geolocation {
 		return d;
 	}
 
-	getDistanceFromPositionToLocation(latitude, longitude) {
-		return this.getUserPosition().then((position) => (
-			Promise.resolve(this.countDistanceBetweenCoordinates(position.latitude, position.longitude, latitude, longitude))
-		)).catch((error) => {
-			Promise.reject('error');
-		});
-	}
-
 	toRad(value) {
 		return value * Math.PI / 180;
 	}
