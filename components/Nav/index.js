@@ -14,8 +14,8 @@ const links = [{
 	name: 'Add Mod Event',
 	path: '/addModEvent/-LdU_ylvZD0OpsyjZXjg'
 }, {
-	name: 'Home Page',
-	path: '/'
+	name: 'Own Events',
+	path: '/ownEvents/'
 }, {
 	name: 'Account settings',
 	path: '/accountSettings'
@@ -47,17 +47,18 @@ const Nav = ({ closeSidenav, onInstallAppClick, showInstallButton, opened }) => 
 				}
 			/>
 			{links.map((link) => (
-				<ListItem>
-					<Link
-						href={link.path}
-							onClick={() => { // eslint-disable-line
-							route(link.path);
-							closeSidenav();
-						}}
-					>
+				<Link
+					key={link.path}
+					href={link.path}
+					onClick={() => { // eslint-disable-line
+						route(link.path);
+						closeSidenav();
+					}}
+				>
+					<ListItem>
 						{link.name}
-					</Link>
-				</ListItem>
+					</ListItem>
+				</Link>
 			))}
 			<div style={styles.installButton}>
 				<InstallButton showButton={showInstallButton} onClick={onInstallAppClick} />

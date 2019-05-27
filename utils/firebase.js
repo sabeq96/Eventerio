@@ -2,6 +2,8 @@ import firebase from 'firebase';
 import { actions } from './store';
 import errorMessages from '../constants/errorMessages';
 
+import _forEach from 'lodash/foreach';
+
 const config = {
 	apiKey: 'AIzaSyDITmSuTTlBzt9j2rv0Dra0GE2zTcE9qdk',
 	authDomain: 'pwa-test-10466.firebaseapp.com',
@@ -118,6 +120,36 @@ class Firebase {
 		this.auth.currentUser.updatePassword(password)
 	)
 
+	getEventList = () => (
+		this.db.ref('events/').once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch((err) => (
+			Promise.reject(err)
+		))
+	)
+
+	getEventListByLocation = ({ latitude, longitude }) => ( // harversine formula
+		this.db.ref('events/').once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch((err) => (
+			Promise.reject(err)
+		))
+	);
+
+	getOwnEventList = () => (
+		this.getUser().then((user) => {
+			const { ownEvents } = user;
+
+			return this.getEventList().then((list) => {
+				const events = {};
+				_forEach(ownEvents, (ownEvent, key) => (
+					events[key] = list[key] || {}
+				));
+
+				return Promise.resolve(events);
+			}).catch((err) => Promise.reject(err));
+		}).catch((err) => Promise.reject(err))
+	)
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto
 	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
