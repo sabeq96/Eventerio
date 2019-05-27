@@ -23,7 +23,7 @@ class Geolocation {
 	countDistanceBetweenCoordinates(latitude1, longitude1, latitude2, longitude2) {
 		const R = 6371; // Radius of the earth in km
 
-		const dLat = this.toRad(latitude2 - latitude1);  // Javascript functions in radians
+		const dLat = this.toRad(latitude2 - latitude1);
 		const dLon = this.toRad(longitude2 - longitude1);
 
 		const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(this.toRad(latitude1)) * Math.cos(this.toRad(latitude2)) * Math.sin(dLon/2) * Math.sin(dLon/2);

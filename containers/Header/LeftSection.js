@@ -1,4 +1,5 @@
 import { Icon } from 'preact-fluid';
+import logo from '../../assets/Logo/EVENTERIO_LOGO.svg';
 
 const LeftSection = ({ openSidenav }) => (
 	<div onClick={openSidenav} style={styles.titleWrapper}>
@@ -6,14 +7,15 @@ const LeftSection = ({ openSidenav }) => (
 			name="bars"
 			size="small"
 		/>
-		<span style={styles.title}>Eventerio</span>
+        <img src={logo} alt="Eventerio Logo" style={styles.title} />
 	</div>
 );
 
 const styles = {
 	title: {
-		fontSize: '24px',
-		marginLeft: '10px'
+		margin: '0 15px',
+        maxWidth: '100%',
+        maxHeight: '30px'
 	},
 	titleWrapper: {
 		cursor: 'pointer'
