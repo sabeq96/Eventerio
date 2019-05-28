@@ -150,6 +150,29 @@ class Firebase {
 			}).catch((err) => Promise.reject(err));
 		}).catch((err) => Promise.reject(err))
 	)
+
+	takePartizip = ({ id }) => {
+		const user = this.auth.currentUser;
+		if (user) {
+			const userEvents = `users/${user.uid}/partizipEvents/`;
+			const attendees = `events/${id}/attendees/`;
+
+			const updates = {};
+			updates[userEvents + id] = true;
+			updates[attendees + user.uid] = true;
+		}
+	}
+
+	rejectPartizip = ({ id }) => {
+		const user = this.auth.currentUser;
+
+		const userEvents = `users/${user.uid}/partizipEvents/${id}`;
+		const attendees = `events/${id}/attendees/${user.uid}`;
+
+		this.db.ref(userEvents).remove();
+		this.db.ref(attendees).remove();
+	}
+
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto
 	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
