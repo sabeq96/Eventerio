@@ -61,6 +61,14 @@ class Firebase {
 		));
 	}
 
+	getEvents() {
+		return this.db.ref(`/events`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch((error) => (
+			Promise.reject({ message: error.message })
+		));
+	}
+
 	getEventOrganizer(id) {
 		return this.db.ref(`/users/${id}`).once('value').then((snapshot) => (
 			Promise.resolve(snapshot.val())
