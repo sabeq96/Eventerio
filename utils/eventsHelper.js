@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _forEach from 'lodash/foreach';
 import Firebase from './firebase';
 import Geolocation from './geolocation';
 
@@ -20,7 +20,7 @@ class EventsHelper {
 				this.firebase.getEvents().then((events) => {
 					const eventsInArea = [];
 
-					_.forEach(events, (event) => {
+					_forEach(events, (event) => {
 						if (event.coordinates) {
 							if (this.isEventInArea(event, position, maxDistance)) {
 								eventsInArea.push(event);
