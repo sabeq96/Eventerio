@@ -136,14 +136,6 @@ class Firebase {
 		))
 	)
 
-	getEventListByLocation = ({ latitude, longitude }) => ( // harversine formula
-		this.db.ref('events/').once('value').then((snapshot) => (
-			Promise.resolve(snapshot.val())
-		)).catch((err) => (
-			Promise.reject(err)
-		))
-	);
-
 	getOwnEventList = () => (
 		this.getUser().then((user) => {
 			const { ownEvents } = user;

@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import EventsHelper from '../../utils/eventsHelper';
 import Firebase from '../../utils/firebase';
 import EventListPage from '../../components/Pages/EventList';
 import { withStore, actions } from '../../utils/store';
@@ -8,22 +9,30 @@ class EventList extends Component{
 		super(props);
 
 		this.state = {
-			eventList: []
+			eventList: [],
+			error: ''
 		};
 	}
 
 	componentDidMount() {
 		const { dispatch } = this.props;
-		const longitude = 0; // getLong
-		const latitude = 0; // getLatt
-		dispatch(actions.SHOW_LOADER, { showLoader: true });
 
-		Firebase.getEventListByLocation({ latitude, longitude }).then((eventList) => {
-			this.setState({ eventList });
-		}).catch((err) => {
-			console.log(err);
-		}).finally(() => {
-			dispatch(actions.SHOW_LOADER, { showLoader: false });
+		Firebase.auth.onAuthStateChanged((user) => { // TODO: Remove this condition, when only authenticated users will have access
+			if (user) {
+				dispatch(actions.SHOW_LOADER, { showLoader: true });
+				Firebase.getUser().then((user) => {
+					const { eventsMaxDistance } = user.settings;
+					EventsHelper.getEventsInArea(eventsMaxDistance).then((eventList) => {
+						this.setState({ eventList });
+					}).catch((error) => {
+						this.setState({ error });
+					});
+				}).catch((error) => {
+					this.setState({ error });
+				}).finally(() => {
+					dispatch(actions.SHOW_LOADER, { showLoader: false });
+				});
+			}
 		});
 	}
 
