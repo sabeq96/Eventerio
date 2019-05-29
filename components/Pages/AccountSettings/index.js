@@ -50,8 +50,8 @@ class AccountSettings extends Component {
 							<div style={styles.textFieldWrapper}>
 								<TextField label="City" effect="line" value={city} onChange={linkstate(this, 'city')} />
 							</div>
-							<div style={styles.slider}>
-								<div style={{ textAlign: 'center' }}>Events max distance: {settings.eventsMaxDistance}</div>
+							<div style={styles.slider} className="acc-slider">
+								<div style={{ textAlign: 'center' }}>Events max distance: <strong>{settings.eventsMaxDistance}</strong></div>
 								<input
 									type="range"
 									min={1}
@@ -85,7 +85,7 @@ const styles = {
 		display: 'flex',
 		flexDirection: 'column',
 		alignContent: 'center',
-		margin: '50px'
+		margin: '50px 20px'
 	},
 	footer: {
 		display: 'flex',
