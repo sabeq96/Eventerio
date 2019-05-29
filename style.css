@@ -24,6 +24,14 @@ md-sidenav {
 	top: 80px !important;
 }
 
+header { 
+    background-color: #5A33A7 !important;
+    background-image: url("assets/bg/navbar-bg.jpg") !important;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+}
+
 
 /* acc slider styles */
 .acc-slider input[type=range] {
