@@ -160,11 +160,11 @@ class Firebase {
 
 	goingToEvents = () => (
 		this.getUser().then((user) => {
-			const { goingEvents } = user;
+			const { goingToEvents } = user;
 
 			return this.getEventList().then((list) => {
 				const events = {};
-				_forEach(goingEvents, (goingEvents, key) => (
+				_forEach(goingToEvents, (goingEvents, key) => (
 					events[key] = list[key] || {}
 				));
 
@@ -192,7 +192,7 @@ class Firebase {
 
 		
 		this.db.ref(userPath).remove();
-		this.db.ref(eventPath).remove();
+		return this.db.ref(eventPath).remove();
 	}
 
 	// if id passed update event

@@ -17,7 +17,6 @@ class GoingToEvents extends Component{
 		dispatch(actions.SHOW_LOADER, { showLoader: true });
 
 		Firebase.goingToEvents().then((eventList) => {
-			console.log(eventList);
 			this.setState({ eventList });
 		}).catch((err) => {
 			console.log(err);
