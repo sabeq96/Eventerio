@@ -22,6 +22,8 @@ md-sidenav {
 	width: 200px !important;
 	position: fixed !important;
 	top: 80px !important;
+    background: #5A33A7 !important;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2) !important;
 }
 
 header { 
@@ -31,6 +33,28 @@ header {
     background-position: 50% 50% !important;
     background-repeat: no-repeat !important;
 }
+
+#sidebarList > div {
+    border: 0 !important;
+    margin: 0 !important;
+    width: 200px !important;
+}
+
+#sidebarList > div > div {
+    background: #ed4b74 !important;
+    color: #fff !important;
+}
+
+#sidebarList > div > div > div {
+    display: block !important;
+    text-align: center;
+}
+
+#sidebarList li {
+    text-align: left !important;
+    padding: 0 20px 0 25px !important;
+}
+
 
 
 /* acc slider styles */
