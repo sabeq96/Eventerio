@@ -92,9 +92,8 @@ class Firebase {
 			if (email) updates[userPath + '/email'] = email;
 			if (settings && settings.eventsMaxDistance)
 				updates[userPath + '/settings/eventsMaxDistance'] = settings.eventsMaxDistance;
-
-
-			// id ownEventId passed and exist in db => delete it
+			
+				// id ownEventId passed and exist in db => delete it
 			// id ownEventId passed and doesn't exist => add it
 			if (ownEventId) {
 				this.db.ref(userPath + '/ownEvents').once('value').then((snapshot) => {
@@ -143,6 +142,21 @@ class Firebase {
 			return this.getEventList().then((list) => {
 				const events = {};
 				_forEach(ownEvents, (ownEvent, key) => (
+					events[key] = list[key] || {}
+				));
+
+				return Promise.resolve(events);
+			}).catch((err) => Promise.reject(err));
+		}).catch((err) => Promise.reject(err))
+	)
+
+	goingToEvents = () => (
+		this.getUser().then((user) => {
+			const { goingEvents } = user;
+
+			return this.getEventList().then((list) => {
+				const events = {};
+				_forEach(goingEvents, (goingEvents, key) => (
 					events[key] = list[key] || {}
 				));
 
