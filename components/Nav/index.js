@@ -17,6 +17,9 @@ const links = [{
 	name: 'Own Events',
 	path: '/ownEvents/'
 }, {
+	name: 'Going To Events',
+	path: '/goingToEvents'
+}, {
 	name: 'Account settings',
 	path: '/accountSettings'
 }];

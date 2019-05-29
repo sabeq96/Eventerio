@@ -72,15 +72,15 @@ class AddModEvent extends Component {
 
 	componentDidMount() {
 		const { dispatch } = this.props;
-		let params = new URL(document.location).searchParams;
-		let eventId = params.get('id');
-		eventId = '-LdU_ylvZD0OpsyjZXjg';
+		const eventId = this.props.eventId;
+
 		if (eventId) {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: true });
 
 			Firebase.getEvent(eventId).then((event) => {
+				console.log('heloooo', event.ownerId);
 				this.setState({ ...event, id: eventId }, () => {
-					Firebase.getEventOrganizer(event.userId).then((user) => {
+					Firebase.getEventOrganizer(event.ownerId).then((user) => {
 						this.setState({
 							organizerAvatarUrl: user.avatarUrl,
 							organizer: `${user.name} ${user.surname}`

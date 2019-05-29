@@ -172,6 +172,29 @@ class Firebase {
 			}).catch((err) => Promise.reject(err));
 		}).catch((err) => Promise.reject(err))
 	)
+
+	takePartizipation = ({ id }) => {
+		const user = this.auth.currentUser;
+		const userPath = `users/${user.uid}/goingToEvents/${id}`;
+		const eventPath = `events/${id}/attendees/${user.uid}/`;
+
+		const updates = {};
+		updates[userPath] = true;
+		updates[eventPath] = true;
+
+		return this.db.ref().update(updates);
+	}
+
+	rejectPartizipation = ({ id }) => {
+		const user = this.auth.currentUser;
+		const userPath = `users/${user.uid}/goingToEvents/${id}`;
+		const eventPath = `events/${id}/attendees/${user.uid}/`;
+
+		
+		this.db.ref(userPath).remove();
+		this.db.ref(eventPath).remove();
+	}
+
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto
 	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
