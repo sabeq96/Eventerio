@@ -52,7 +52,6 @@ class SingleEvent extends Component {
 			organizerAvatarUrl: '',
 			organizer: '',
 			description: '',
-			comments: [],
 			error: ''
 		};
 	}

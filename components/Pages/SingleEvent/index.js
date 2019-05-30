@@ -208,9 +208,6 @@ class SingleEvent extends Component {
 				{!isOwner && !isPartizipant && (
 					<JoinButton onJoin={onJoin} />
 				)}
-				<SectionWithHeader title="Comments">
-					Tak lub nie?
-				</SectionWithHeader>
 			</div>
 		);
 	}
