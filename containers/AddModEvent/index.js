@@ -65,7 +65,6 @@ class AddModEvent extends Component {
 			organizerAvatarUrl: '',
 			organizer: '',
 			description: '',
-			comments: [],
 			error: ''
 		};
 	}
