@@ -234,6 +234,10 @@ class Firebase {
 		return user.reauthenticateAndRetrieveDataWithCredential(credential);
 	}
 
+	resetPassword = (email) => {
+		return this.auth.sendPasswordResetEmail(email);
+	}
+
 	// TIP: this method handle all login status change and should also update store with user data
 	startLoginObserver = (dispatch) => {
 		this.auth.onAuthStateChanged((user) => {
