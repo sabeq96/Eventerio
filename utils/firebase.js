@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { actions } from './store';
 import errorMessages from '../constants/errorMessages';
 
-import _forEach from 'lodash/foreach';
+import _forEach from 'lodash/forEach';
 
 const config = {
 	apiKey: 'AIzaSyDITmSuTTlBzt9j2rv0Dra0GE2zTcE9qdk',

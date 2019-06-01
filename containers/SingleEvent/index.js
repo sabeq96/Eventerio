@@ -44,6 +44,8 @@ class SingleEvent extends Component {
 			shortDescription: '',
 			photoUrl: '',
 			startTime: '',
+			endTime: '',
+			contactDetails: '',
 			address: '',
 			coordinates: {
 				latitude: 0,
@@ -88,6 +90,8 @@ class SingleEvent extends Component {
 			photoUrl,
 			shortDescription,
 			startTime,
+			endTime,
+			contactDetails,
 			address,
 			coordinates,
 			description,
@@ -103,6 +107,8 @@ class SingleEvent extends Component {
 				photoUrl={photoUrl}
 				shortDescription={shortDescription}
 				startTime={new Date(startTime*1000).toLocaleDateString()}
+				endTime={new Date(endTime*1000).toLocaleDateString()}
+				contactDetails={contactDetails}
 				address={address}
 				organizerAvatarUrl={organizerAvatarUrl}
 				organizer={organizer}

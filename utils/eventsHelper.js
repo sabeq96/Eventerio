@@ -1,4 +1,4 @@
-import _forEach from 'lodash/foreach';
+import _forEach from 'lodash/forEach';
 import Firebase from './firebase';
 import Geolocation from './geolocation';
 
