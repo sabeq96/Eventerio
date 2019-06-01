@@ -18,12 +18,12 @@ class EventsHelper {
 		return new Promise((resolve, reject) => {
 			this.geolocation.getUserPosition().then((position) => {
 				this.firebase.getEvents().then((events) => {
-					const eventsInArea = [];
+					const eventsInArea = {};
 
-					_forEach(events, (event) => {
+					_forEach(events, (event, key) => {
 						if (event.coordinates) {
 							if (this.isEventInArea(event, position, maxDistance)) {
-								eventsInArea.push(event);
+								eventsInArea[key] = event;
 							}
 						}
 					});

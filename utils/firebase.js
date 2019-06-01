@@ -86,6 +86,8 @@ class Firebase {
 				Promise.reject({ message: errorMessages.userNotFound })
 			));
 		}
+		
+		return Promise.reject({ message: 'No user found' });
 	}
 
 	updateUser = ({ avatarUrl, city, name, surname, email, settings, ownEventId }) => {
@@ -199,8 +201,8 @@ class Firebase {
 
 		if (address) updates[eventPath + '/address'] = address;
 		if (contactDetails) updates[eventPath + '/contactDetails'] = contactDetails;
-		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime[0]).getTime();
-		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime[0]).getTime();
+		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime).getTime();
+		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime).getTime();
 		if (description) updates[eventPath + '/description'] = description;
 		if (name) updates[eventPath + '/name'] = name;
 		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;
