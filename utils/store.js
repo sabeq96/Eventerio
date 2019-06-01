@@ -10,33 +10,41 @@ const actions = {
 	LOGIN: 'LOGIN',
 	LOGOUT: 'LOGOUT',
 	SHOW_LOADER: 'SHOW_LOADER',
-	SHOW_LOGIN_MODAL: 'SHOW_LOGIN_MODAL'
+	SHOW_LOGIN_MODAL: 'SHOW_LOGIN_MODAL',
+	SHOW_ACTION_RESULT_MODAL: 'SHOW_ACTION_RESULT_MODAL'
 };
 
 const reducer = ( state, action ) => {
 	switch (action.type) {
-		case 'LOGIN':
+		case actions.LOGIN:
 			return {
 				...state,
 				user: action.user
 			};
       
-		case 'LOGOUT':
+		case actions.LOGOUT:
 			return {
 				...state,
 				user: null
 			};
 
-		case 'SHOW_LOADER':
+		case actions.SHOW_LOADER:
 			return {
 				...state,
 				showLoader: action.showLoader
 			};
 
-		case 'SHOW_LOGIN_MODAL':
+		case actions.SHOW_LOGIN_MODAL:
 			return {
 				...state,
 				modalType: action.modalType
+			};
+
+		case actions.SHOW_ACTION_RESULT_MODAL:
+			return {
+				...state,
+				actionResultModalType: action.actionResultModalType,
+				actionResultModalMessage: action.actionResultModalMessage
 			};
       
 		default:

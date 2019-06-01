@@ -1,6 +1,6 @@
 {
-  "name": "pwa",
-  "short_name": "pwa",
+  "name": "Eventerio",
+  "short_name": "Eventerio",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

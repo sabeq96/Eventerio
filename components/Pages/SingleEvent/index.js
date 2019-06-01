@@ -4,11 +4,15 @@ import { Grid, Cell } from '../../Grid';
 import GoogleMap from '../../GoogleMap';
 import 'style';
 
-const JoinButton = () => (
+const JoinButton = ({ onJoin }) => (
 	<div style={styles.joinButton}>
 		<Animate
 			component={
-				<Button rounded left={<Icon name="check" size="xsmall" />}>
+				<Button
+					onClick={onJoin}
+					rounded
+					left={<Icon name="check" size="xsmall" />}
+				>
 					<span>Join us !</span>
 				</Button>
 			}
@@ -20,6 +24,28 @@ const JoinButton = () => (
 			}}
 		/>
 	</div>
+);
+
+const ModifyButton = ({ onModify }) => (
+	<Button
+		onClick={onModify}
+		rounded
+		primary
+		left={<Icon name="pen" size="xsmall" />}
+	>
+		Modify Event
+	</Button>
+);
+
+const RejectButton = ({ onReject }) => (
+	<Button
+		onClick={onReject}
+		rounded
+		primary
+		left={<Icon name="exclamation-triangle" size="xsmall" />}
+	>
+		Reject Event
+	</Button>
 );
 
 const EventInfo = ({ label, content }) => (
@@ -49,7 +75,7 @@ const EventOwnerDetails = ({ avatarUrl, userName }) => (
 	</Card>
 );
 
-const EventHeader = ({ title, children, image, bodyWidth }) => (
+const EventHeader = ({ title, children, image, bodyWidth, isOwner, isPartizipant, onJoin, onModify, onReject }) => (
 	<div style={styles.header.headerWrapper}>
 		<div style={{
 			position: bodyWidth > 500 ? 'absolute' : 'static',
@@ -58,7 +84,15 @@ const EventHeader = ({ title, children, image, bodyWidth }) => (
 		>
 			<h1 style={styles.header.coverHeader}>{title}</h1>
 			<p> {children} </p>
-			<Button primary left={<Icon name="check" size="xsmall" />}>JOIN!</Button>
+			{isOwner && (
+				<ModifyButton onModify={onModify} />
+			)}
+			{isPartizipant && (
+				<RejectButton onReject={onReject} />
+			)}
+			{!isOwner && !isPartizipant && (
+				<Button onClick={onJoin} primary left={<Icon name="check" size="xsmall" />}>JOIN!</Button>
+			)}
 		</div>
 		<div
 			style={{
@@ -102,13 +136,35 @@ class SingleEvent extends Component {
 		window.removeEventListener('resize', this.setBodyWidth);
 	}
 
-	render({ name, photoUrl, shortDescription, startTime, endTime, contactDetails, address, organizerAvatarUrl, organizer, coordinates, description }) {
+	render({
+		name,
+		photoUrl,
+		shortDescription,
+		startTime,
+		endTime,
+		address,
+		organizerAvatarUrl,
+		organizer,
+		contactDetails,
+		coordinates,
+		description,
+		isOwner,
+		isPartizipant,
+		onJoin,
+		onReject,
+		onModify
+	}) {
 		return (
 			<div className="container">
 				<EventHeader
 					bodyWidth={this.state.bodyWidth}
 					title={name}
 					image={photoUrl}
+					isOwner={isOwner}
+					isPartizipant={isPartizipant}
+					onJoin={onJoin}
+					onReject={onReject}
+					onModify={onModify}
 				>
 					{shortDescription}
 				</EventHeader>
@@ -120,7 +176,7 @@ class SingleEvent extends Component {
 									content={startTime}
 									label="Start time:"
 								/>
-                                <EventInfo
+								<EventInfo
 									content={endTime}
 									label="End time:"
 								/>
@@ -128,7 +184,7 @@ class SingleEvent extends Component {
 									content={address}
 									label="Address:"
 								/>
-                                <EventInfo
+								<EventInfo
 									content={contactDetails}
 									label="Contact details:"
 								/>
@@ -152,12 +208,16 @@ class SingleEvent extends Component {
 				</Grid>
 				<SectionWithHeader title="Description">
 					{description}
-					<JoinButton />
 				</SectionWithHeader>
-				<SectionWithHeader title="Comments">
-					Tak lub nie?
-				</SectionWithHeader>
-
+				{isOwner && (
+					<ModifyButton onModify={onModify} />
+				)}
+				{isPartizipant && (
+					<RejectButton onReject={onReject} />
+				)}
+				{!isOwner && !isPartizipant && (
+					<JoinButton onJoin={onJoin} />
+				)}
 			</div>
 		);
 	}

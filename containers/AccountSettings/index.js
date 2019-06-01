@@ -90,7 +90,7 @@ class AccountSettings extends Component {
 	}
 
 	componentDidMount() {
-		Firebase.auth.onAuthStateChanged((user) => {
+		Firebase.auth.onAuthStateChanged((user) => { // TODO: Remove this condition, when only authenticated users will have access
 			if (user) {
 				Firebase.getUser().then((user) => {
 					this.setState({ user });

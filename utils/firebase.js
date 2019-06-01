@@ -2,6 +2,8 @@ import firebase from 'firebase';
 import { actions } from './store';
 import errorMessages from '../constants/errorMessages';
 
+import _forEach from 'lodash/forEach';
+
 const config = {
 	apiKey: 'AIzaSyDITmSuTTlBzt9j2rv0Dra0GE2zTcE9qdk',
 	authDomain: 'pwa-test-10466.firebaseapp.com',
@@ -59,6 +61,14 @@ class Firebase {
 		));
 	}
 
+	getEvents() {
+		return this.db.ref(`/events`).once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch((error) => (
+			Promise.reject({ message: error.message })
+		));
+	}
+
 	getEventOrganizer(id) {
 		return this.db.ref(`/users/${id}`).once('value').then((snapshot) => (
 			Promise.resolve(snapshot.val())
@@ -90,9 +100,8 @@ class Firebase {
 			if (email) updates[userPath + '/email'] = email;
 			if (settings && settings.eventsMaxDistance)
 				updates[userPath + '/settings/eventsMaxDistance'] = settings.eventsMaxDistance;
-
-
-			// id ownEventId passed and exist in db => delete it
+			
+				// id ownEventId passed and exist in db => delete it
 			// id ownEventId passed and doesn't exist => add it
 			if (ownEventId) {
 				this.db.ref(userPath + '/ownEvents').once('value').then((snapshot) => {
@@ -117,6 +126,66 @@ class Firebase {
 	updatePassword = (password) => (
 		this.auth.currentUser.updatePassword(password)
 	)
+
+	getEventList = () => (
+		this.db.ref('events/').once('value').then((snapshot) => (
+			Promise.resolve(snapshot.val())
+		)).catch((err) => (
+			Promise.reject(err)
+		))
+	)
+
+	getOwnEventList = () => (
+		this.getUser().then((user) => {
+			const { ownEvents } = user;
+
+			return this.getEventList().then((list) => {
+				const events = {};
+				_forEach(ownEvents, (ownEvent, key) => (
+					events[key] = list[key] || {}
+				));
+
+				return Promise.resolve(events);
+			}).catch((err) => Promise.reject(err));
+		}).catch((err) => Promise.reject(err))
+	)
+
+	goingToEvents = () => (
+		this.getUser().then((user) => {
+			const { goingToEvents } = user;
+
+			return this.getEventList().then((list) => {
+				const events = {};
+				_forEach(goingToEvents, (goingEvents, key) => (
+					events[key] = list[key] || {}
+				));
+
+				return Promise.resolve(events);
+			}).catch((err) => Promise.reject(err));
+		}).catch((err) => Promise.reject(err))
+	)
+
+	takePartizipation = ({ id }) => {
+		const user = this.auth.currentUser;
+		const userPath = `users/${user.uid}/goingToEvents/${id}`;
+		const eventPath = `events/${id}/attendees/${user.uid}/`;
+
+		const updates = {};
+		updates[userPath] = true;
+		updates[eventPath] = true;
+
+		return this.db.ref().update(updates);
+	}
+
+	rejectPartizipation = ({ id }) => {
+		const user = this.auth.currentUser;
+		const userPath = `users/${user.uid}/goingToEvents/${id}`;
+		const eventPath = `events/${id}/attendees/${user.uid}/`;
+
+		
+		this.db.ref(userPath).remove();
+		return this.db.ref(eventPath).remove();
+	}
 
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto

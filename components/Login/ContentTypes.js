@@ -7,7 +7,7 @@ const ContentTypes = ({ contentType, onChange, values: { email, oldPassword, pas
 			return (
 				<div>
 					<TextField
-						type="text"
+						type="email"
 						label="email"
 						onChange={onChange('email')}
 						value={email}
@@ -32,7 +32,7 @@ const ContentTypes = ({ contentType, onChange, values: { email, oldPassword, pas
 			return (
 				<div>
 					<TextField
-						type="text"
+						type="email"
 						label="email"
 						onChange={onChange('email')}
 						value={email}
