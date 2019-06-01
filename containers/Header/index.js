@@ -3,6 +3,7 @@ import { Component } from 'preact';
 import LoginModal from '../../components/Login';
 import Loader from '../../components/Loader';
 import AppBar from './AppBar';
+import ActionResultModal from '../../components/ActionResultModal';
 
 import { withStore, actions } from '../../utils/store';
 import Firebase from '../../utils/firebase';
@@ -24,7 +25,7 @@ class Header extends Component {
 		Firebase.startLoginObserver(props.dispatch);
 	}
 	
-	render({ openSidenav, store: { user, showLoader, modalType } }) {
+	render({ openSidenav, store: { user, showLoader, modalType, actionResultModalType, actionResultModalMessage } }) {
 		return (
 			<div style={styles.wrapper}>
 				<AppBar
@@ -38,6 +39,10 @@ class Header extends Component {
 				)}
 				{showLoader && (
 					<Loader />
+				)}
+
+				{actionResultModalType && actionResultModalMessage && (
+					<ActionResultModal />
 				)}
 			</div>
 		);
