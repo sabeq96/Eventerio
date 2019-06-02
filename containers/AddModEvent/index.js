@@ -48,7 +48,7 @@ class AddModEvent extends Component {
 		}).catch(() => {
 			dispatch({
 				type: 'SHOW_ACTION_RESULT_MODAL',
-				actionResultModalType: 'SUCCESS',
+				actionResultModalType: 'ERROR',
 				actionResultModalMessage: 'Oops something went wrong'
 			});
 		}).finally(() => {
