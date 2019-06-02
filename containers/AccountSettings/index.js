@@ -36,6 +36,11 @@ class AccountSettings extends Component {
 		Firebase.updateUser(userData).then(() => {
 			Firebase.getUser().then((user) => {
 				this.setState({ user });
+				dispatch({
+					type: 'SHOW_ACTION_RESULT_MODAL',
+					actionResultModalType: 'SUCCESS',
+					actionResultModalMessage: 'Gut Job !'
+				});
 			});
 		}).catch(error => {
 			this.setState({ error: error.message });
@@ -53,6 +58,11 @@ class AccountSettings extends Component {
 			snapshot.ref.getDownloadURL().then((avatarUrl) => {
 				Firebase.updateUser({ ...userData, avatarUrl }).then(() => {
 					Firebase.getUser().then((user) => {
+						dispatch({
+							type: 'SHOW_ACTION_RESULT_MODAL',
+							actionResultModalType: 'SUCCESS',
+							actionResultModalMessage: 'Gut Job !'
+						});
 						this.setState({
 							user,
 							file: null
@@ -90,12 +100,8 @@ class AccountSettings extends Component {
 	}
 
 	componentDidMount() {
-		Firebase.auth.onAuthStateChanged((user) => { // TODO: Remove this condition, when only authenticated users will have access
-			if (user) {
-				Firebase.getUser().then((user) => {
-					this.setState({ user });
-				});
-			}
+		Firebase.getUser().then((user) => {
+			this.setState({ user });
 		});
 	}
     

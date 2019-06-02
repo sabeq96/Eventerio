@@ -1,8 +1,9 @@
 import './style';
 import { Component } from 'preact';
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Provider } from 'statty';
 import { ThemeProvider } from 'preact-fluid';
+import Firebase from './utils/firebase';
 
 import Sidebar from 'preact-sidenav';
 import Header from './containers/Header';
@@ -19,8 +20,6 @@ import AccountSettings from './containers/AccountSettings';
 import { beforeInstallListener, promptInstallApp } from './utils/beforeInstallPrompt';
 import { initialState } from './utils/store';
 
-const theme = {};
-
 class App extends Component {
 	handleAppInstall = () => {
 		promptInstallApp(this);
@@ -33,10 +32,18 @@ class App extends Component {
 		/>
 	)
 
+	handleRouteChange = (e) => {
+		if (e.url !== '/events' && !this.state.login) {
+			route('/events', true);
+		}
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			login: false,
+			loadingApp: true,
 			showInstallButton: false
 		};
 
@@ -44,26 +51,33 @@ class App extends Component {
 	}
 
 	componentDidMount = () => {
+		Firebase.auth.onAuthStateChanged((user) => {
+			if (user) this.setState({ login: true });
+			this.setState({ loadingApp: false });
+		});
+
 		beforeInstallListener(this);
 	}
-	//TODO: FIX THEME PROVIDER, CURRENTRY DOES NOT PASS THEME PROP
+
 	render() {
 		return (
 			<Provider state={initialState}>
-				<ThemeProvider theme={theme}>
+				<ThemeProvider>
 					<div id="app">
 						<Sidebar sidebar={this.getNav()}>
 							<Header />
 						</Sidebar>
-						<Router>
-							<Home path="/" />
-							<AddModEvent path="/addModEvent/:eventId" />
-							<SingleEvent path="/events/:eventId" />
-							<EventList path="/events" />
-							<OwnEvents path="/ownEvents" />
-							<GoingToEvents path="/goingToEvents" />
-							<AccountSettings path="/accountSettings" />
-						</Router>
+						{!this.state.loadingApp && (
+							<Router onChange={this.handleRouteChange}>
+								<Home path="/" />
+								<AddModEvent path="/addModEvent/:eventId" />
+								<SingleEvent path="/events/:eventId" />
+								<EventList path="/events" />
+								<OwnEvents path="/ownEvents" />
+								<GoingToEvents path="/goingToEvents" />
+								<AccountSettings path="/accountSettings" />
+							</Router>
+						)}
 					</div>
 				</ThemeProvider>
 			</Provider>

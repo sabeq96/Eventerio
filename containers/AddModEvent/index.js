@@ -1,8 +1,10 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 import AddModEventPage from '../../components/Pages/AddModEvent';
 
 import { withStore, actions } from '../../utils/store';
 import Firebase from '../../utils/firebase';
+import _isArray from 'lodash/isArray';
 	
 class AddModEvent extends Component {
 	onConfirm = () => {
@@ -26,10 +28,29 @@ class AddModEvent extends Component {
 
 	updateEvent = (payload) => {
 		const { dispatch } = this.props;
-		Firebase.updateEvent(payload).then((resp) => {
-			// console.log(resp);
-		}).catch((err) => {
-			// console.log(err);
+		const clonedPayload = { ...payload };
+
+		if (_isArray(payload.startTime)) {
+			clonedPayload.startTime = payload.startTime[0];
+		}
+
+		if (_isArray(payload.endTime)) {
+			clonedPayload.endTime = payload.endTime[0];
+		}
+	
+		Firebase.updateEvent(clonedPayload).then((resp) => {
+			route('/events/');
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'SUCCESS',
+				actionResultModalMessage: 'Gut Job !'
+			});
+		}).catch(() => {
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'ERROR',
+				actionResultModalMessage: 'Oops something went wrong'
+			});
 		}).finally(() => {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
 		});
@@ -37,7 +58,6 @@ class AddModEvent extends Component {
 
 	onChange = (name, value) => {
 		this.setState({ [name]: value });
-		this.forceUpdate();
 	}
 
 	backgroundChange = (e) => {
@@ -55,8 +75,8 @@ class AddModEvent extends Component {
 			name: '',
 			shortDescription: '',
 			photoUrl: '',
-			startTime: '',
-			endTime: '',
+			startTime: new Date().getTime(),
+			endTime: new Date().getTime(),
 			address: '',
 			coordinates: {
 				latitude: 0,
@@ -73,20 +93,19 @@ class AddModEvent extends Component {
 		const { dispatch } = this.props;
 		const eventId = this.props.eventId;
 
-		if (eventId) {
+		if (eventId && eventId !== 'NEW') {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: true });
 
 			Firebase.getEvent(eventId).then((event) => {
-				console.log('heloooo', event.ownerId);
-				this.setState({ ...event, id: eventId }, () => {
-					Firebase.getEventOrganizer(event.ownerId).then((user) => {
-						this.setState({
-							organizerAvatarUrl: user.avatarUrl,
-							organizer: `${user.name} ${user.surname}`
-						});
-					}).catch((error) => {
-						this.setState({ error });
+				Firebase.getEventOrganizer(event.ownerId).then((user) => {
+					this.setState({
+						organizerAvatarUrl: user.avatarUrl,
+						organizer: `${user.name} ${user.surname}`,
+						id: eventId,
+						...event
 					});
+				}).catch((error) => {
+					this.setState({ error });
 				});
 			}).catch((error) => {
 				this.setState({ error });
