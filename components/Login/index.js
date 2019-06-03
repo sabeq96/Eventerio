@@ -15,16 +15,26 @@ class LoginModal extends Component {
 		this.setState({ error: null });
 		this.props.dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'SIGNIN' });
 	}
+
 	changeContentTypeToLogIn = () => {
 		this.setState({ error: null });
 		this.props.dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'LOGIN' });
+	}
+
+	changeContentTypeToResetPassword = () => {
+		this.setState({
+			email: '',
+			error: null
+		});
+		this.props.dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'RESET_PASSWORD' });
 	}
 	
 	getContentSpecs = (type) => {
 		const CONTENT_TYPES = {
 			SIGNIN: { key: 'SIGNIN', value: 'Sign In', action: this.handleSignIn },
 			LOGIN: { key: 'LOGIN', value: 'Log In', action: this.handleLogin },
-			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password', action: this.handleChangePassword }
+			CHANGE_PASSWORD: { key: 'CHANGE_PASSWORD', value: 'Change password', action: this.handleChangePassword },
+			RESET_PASSWORD: { key: 'RESET_PASSWORD', value: 'Reset password', action: this.handleResetPassword }
 		};
 
 		return type ? CONTENT_TYPES[type]: {};
@@ -71,6 +81,25 @@ class LoginModal extends Component {
 		}).catch((error) => (
 			this.setState({ error: error.message })
 		)).finally(() => {
+			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
+		});
+	}
+
+	handleResetPassword = (e) => {
+		e.preventDefault();
+		const { dispatch } = this.props;
+		const { email } = this.state;
+
+		dispatch({ type: actions.SHOW_LOADER, showLoader: true });
+		Firebase.resetPassword(email).then(() => {
+			this.setState({
+				email: '',
+				error: ''
+			});
+			dispatch({ type: actions.SHOW_LOGIN_MODAL, modalType: 'LOGIN' });
+		}).catch((error) => {
+			this.setState({ error: error.message });
+		}).finally(() => {
 			dispatch({ type: actions.SHOW_LOADER, showLoader: false });
 		});
 	}
@@ -132,14 +161,21 @@ class LoginModal extends Component {
 								}
 							/>
 							{ store.modalType === 'LOGIN' && (
-								<div style={styles.linkWrapper} onClick={this.changeContentTypeToSignIn}>
-									You don't have account? <span style={styles.link}>Sign In</span>
+								<div>
+									<div style={styles.linkWrapper} onClick={this.changeContentTypeToSignIn}>
+										You don't have account? <span style={styles.link}>Sign In</span>
+									</div>
+									<div style={styles.linkWrapper} onClick={this.changeContentTypeToResetPassword}>
+										Did you forget your password? <span style={styles.link}>Reset password</span>
+									</div>
 								</div>
 							)}
 
 							{ store.modalType === 'SIGNIN' && (
-								<div style={styles.linkWrapper} onClick={this.changeContentTypeToLogIn}>
-									You already have account? <span style={styles.link}>Log In</span>
+								<div>
+									<div style={styles.linkWrapper} onClick={this.changeContentTypeToLogIn}>
+										You already have account? <span style={styles.link}>Log In</span>
+									</div>
 								</div>
 							)}
 						</form>

@@ -92,6 +92,25 @@ const ContentTypes = ({ contentType, onChange, values: { email, oldPassword, pas
 				</div>
 			);
 		}
+
+		case 'RESET_PASSWORD' : {
+			return (
+				<div>
+					<TextField
+						type="email"
+						label="email"
+						onChange={onChange('email')}
+						value={email}
+						style={{ marginTop: '20px' }}
+					/>
+					{error && (
+						<div style={styles.error}>
+							{error}
+						</div>
+					)}
+				</div>
+			);
+		}
     
 		default: {
 			return null;
