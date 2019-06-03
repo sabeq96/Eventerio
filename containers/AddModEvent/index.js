@@ -60,10 +60,15 @@ class AddModEvent extends Component {
 	onChange = (name, value) => {
 		if (name === 'address' && value !== '') {
 			Geolocation.getCoordinates(value).then((coordinates) => {
-				this.setState({ coordinates });
+				this.setState({
+					address: value,
+					coordinates
+				});
 			});
 		}
-		this.setState({ [name]: value });
+		else {
+			this.setState({ [name]: value });
+		}
 	}
 
 	backgroundChange = (e) => {
