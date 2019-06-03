@@ -191,7 +191,7 @@ class Firebase {
 
 	// if id passed update event
 	// if no id, autogenerate and add to ownEvents auto
-	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl }) => {
+	updateEvent = ({ id, address, contactDetails, startTime, endTime, description, name, shortDescription, photoUrl, coordinates }) => {
 		const user = this.auth.currentUser;
 		const eventId = id || this.db.ref().child('events').push().key;
 		const eventPath = `events/${eventId}`;
@@ -207,6 +207,7 @@ class Firebase {
 		if (name) updates[eventPath + '/name'] = name;
 		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;
 		if (photoUrl) updates[eventPath + '/photoUrl'] = photoUrl;
+		if (coordinates) updates[eventPath + '/coordinates'] = coordinates;
 
 		if (!id) {
 			this.updateUser({ ownEventId: eventId }).then(() => {
