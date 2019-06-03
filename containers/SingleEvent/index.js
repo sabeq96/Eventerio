@@ -7,18 +7,39 @@ import _some from 'lodash/some';
 
 class SingleEvent extends Component {
 	onJoin = () => {
+		const { dispatch } = this.props;
 		Firebase.takePartizipation({ id: this.props.eventId }).then((res) => {
-			console.log(res);
+			route('/events/');
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'SUCCESS',
+				actionResultModalMessage: 'Gut Job !'
+			});
 		}).catch((err) => {
-			console.log(err);
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'ERROR',
+				actionResultModalMessage: 'Oops something went wrong'
+			});
 		});
 	}
 
 	onReject = () => {
 		Firebase.rejectPartizipation({ id: this.props.eventId }).then((res) => {
-			console.log(res);
+			const { dispatch } = this.props;
+			route('/events/');
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'SUCCESS',
+				actionResultModalMessage: 'Gut Job !'
+			});
 		}).catch((err) => {
-			console.log(err);
+			const { dispatch } = this.props;
+			dispatch({
+				type: 'SHOW_ACTION_RESULT_MODAL',
+				actionResultModalType: 'ERROR',
+				actionResultModalMessage: 'Oops something went wrong'
+			});
 		});
 	}
 
@@ -44,6 +65,8 @@ class SingleEvent extends Component {
 			shortDescription: '',
 			photoUrl: '',
 			startTime: '',
+			endTime: '',
+			contactDetails: '',
 			address: '',
 			coordinates: {
 				latitude: 0,
@@ -52,7 +75,6 @@ class SingleEvent extends Component {
 			organizerAvatarUrl: '',
 			organizer: '',
 			description: '',
-			comments: [],
 			error: ''
 		};
 	}
@@ -89,6 +111,8 @@ class SingleEvent extends Component {
 			photoUrl,
 			shortDescription,
 			startTime,
+			endTime,
+			contactDetails,
 			address,
 			coordinates,
 			description,
@@ -103,7 +127,9 @@ class SingleEvent extends Component {
 				name={name}
 				photoUrl={photoUrl}
 				shortDescription={shortDescription}
-				startTime={new Date(startTime*1000).toLocaleDateString()}
+				startTime={new Date(startTime).toLocaleDateString()}
+				endTime={new Date(endTime).toLocaleDateString()}
+				contactDetails={contactDetails}
 				address={address}
 				organizerAvatarUrl={organizerAvatarUrl}
 				organizer={organizer}

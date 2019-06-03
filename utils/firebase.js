@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { actions } from './store';
 import errorMessages from '../constants/errorMessages';
 
-import _forEach from 'lodash/foreach';
+import _forEach from 'lodash/forEach';
 
 const config = {
 	apiKey: 'AIzaSyDITmSuTTlBzt9j2rv0Dra0GE2zTcE9qdk',
@@ -86,6 +86,8 @@ class Firebase {
 				Promise.reject({ message: errorMessages.userNotFound })
 			));
 		}
+		
+		return Promise.reject({ message: 'No user found' });
 	}
 
 	updateUser = ({ avatarUrl, city, name, surname, email, settings, ownEventId }) => {
@@ -134,14 +136,6 @@ class Firebase {
 			Promise.reject(err)
 		))
 	)
-
-	getEventListByLocation = ({ latitude, longitude }) => ( // harversine formula
-		this.db.ref('events/').once('value').then((snapshot) => (
-			Promise.resolve(snapshot.val())
-		)).catch((err) => (
-			Promise.reject(err)
-		))
-	);
 
 	getOwnEventList = () => (
 		this.getUser().then((user) => {
@@ -207,8 +201,8 @@ class Firebase {
 
 		if (address) updates[eventPath + '/address'] = address;
 		if (contactDetails) updates[eventPath + '/contactDetails'] = contactDetails;
-		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime[0]).getTime();
-		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime[0]).getTime();
+		if (startTime) updates[eventPath + '/startTime'] = new Date(startTime).getTime();
+		if (endTime) updates[eventPath + '/endTime'] = new Date(endTime).getTime();
 		if (description) updates[eventPath + '/description'] = description;
 		if (name) updates[eventPath + '/name'] = name;
 		if (shortDescription) updates[eventPath + '/shortDescription'] = shortDescription;

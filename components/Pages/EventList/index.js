@@ -19,7 +19,7 @@ const EventPost = ({ title, shortDesc, image, date, address, link, bodyWidth }) 
 		<Cell size={2}>
 			<div>
 				<h2 style={styles.event.eventTitle}>
-					<a href={link} style={styles.event.eventLink}>
+					<a href={`/events/${link}`} style={styles.event.eventLink}>
 						{title}
 					</a>
 				</h2>
@@ -34,13 +34,7 @@ const EventPost = ({ title, shortDesc, image, date, address, link, bodyWidth }) 
 								size="xsmall"
 								style={{ marginRight: '10px' }}
 							/>
-							{
-								new Date(date).getDate()
-								+ '-' +
-								(new Date(date).getMonth() + 1)
-								+ '-' +
-								new Date(date).getFullYear()
-							}
+							{new Date(date).toLocaleDateString()}
 						</div>
 					</Cell>
 					<Cell width={1}>

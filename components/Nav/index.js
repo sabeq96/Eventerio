@@ -5,20 +5,17 @@ import OutsideClickHandler from '../OutsideClickHandler';
 import './style';
 
 const links = [{
-	name: 'Test single Event',
-	path: '/events/-LdU_ylvZD0OpsyjZXjg'
-}, {
-	name: 'Test Event List',
+	name: 'Event List',
 	path: '/events/'
-}, {
-	name: 'Add Mod Event',
-	path: '/addModEvent/-LdU_ylvZD0OpsyjZXjg'
 }, {
 	name: 'Own Events',
 	path: '/ownEvents/'
 }, {
 	name: 'Going To Events',
 	path: '/goingToEvents'
+}, {
+	name: 'New event',
+	path: '/addModEvent/NEW'
 }, {
 	name: 'Account settings',
 	path: '/accountSettings'

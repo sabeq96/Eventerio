@@ -141,9 +141,11 @@ class SingleEvent extends Component {
 		photoUrl,
 		shortDescription,
 		startTime,
+		endTime,
 		address,
 		organizerAvatarUrl,
 		organizer,
+		contactDetails,
 		coordinates,
 		description,
 		isOwner,
@@ -172,11 +174,19 @@ class SingleEvent extends Component {
 							<CardBody>
 								<EventInfo
 									content={startTime}
-									label="Date: "
+									label="Start time:"
+								/>
+								<EventInfo
+									content={endTime}
+									label="End time:"
 								/>
 								<EventInfo
 									content={address}
 									label="Address:"
+								/>
+								<EventInfo
+									content={contactDetails}
+									label="Contact details:"
 								/>
 								<EventOwnerDetails
 									avatarUrl={organizerAvatarUrl}
@@ -208,9 +218,6 @@ class SingleEvent extends Component {
 				{!isOwner && !isPartizipant && (
 					<JoinButton onJoin={onJoin} />
 				)}
-				<SectionWithHeader title="Comments">
-					Tak lub nie?
-				</SectionWithHeader>
 			</div>
 		);
 	}
