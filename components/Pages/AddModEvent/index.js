@@ -2,6 +2,7 @@ import { Component } from 'preact';
 import { Image, Icon, Card, CardBody, CardHeader } from 'preact-fluid';
 import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
+import GoogleMap from '../../GoogleMap';
 
 const TextArea = ({ children, style, name, onChange }) => (
 	<textarea style={{ ...style, ...styles.textArea }} onChange={(e) => onChange(name, e.target.value)}>
@@ -174,8 +175,9 @@ class AddModEvent extends Component {
 					<Cell size={2}>
 						<Card>
 							<CardBody>
-								<EventMap
-									url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d83296.89012681483!2d19.903836073576464!3d49.275870133474875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4715f29294ef3939%3A0xdf8d87a1716ba6a0!2sZakopane!5e0!3m2!1spl!2spl!4v1556994611817!5m2!1spl!2spl"
+								<GoogleMap
+									latitude={props.coordinates.latitude}
+									longitude={props.coordinates.longitude}
 								/>
 							</CardBody>
 						</Card>

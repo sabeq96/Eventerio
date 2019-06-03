@@ -4,6 +4,7 @@ import AddModEventPage from '../../components/Pages/AddModEvent';
 
 import { withStore, actions } from '../../utils/store';
 import Firebase from '../../utils/firebase';
+import Geolocation from '../../utils/geolocation';
 import _isArray from 'lodash/isArray';
 	
 class AddModEvent extends Component {
@@ -57,6 +58,11 @@ class AddModEvent extends Component {
 	}
 
 	onChange = (name, value) => {
+		if (name === 'address' && value !== '') {
+			Geolocation.getCoordinates(value).then((coordinates) => {
+				this.setState({ coordinates });
+			});
+		}
 		this.setState({ [name]: value });
 	}
 
