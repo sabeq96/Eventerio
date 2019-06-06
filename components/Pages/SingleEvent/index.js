@@ -83,7 +83,7 @@ const EventHeader = ({ title, children, image, bodyWidth, isOwner, isPartizipant
 		}}
 		>
 			<h1 style={styles.header.coverHeader}>{title}</h1>
-			<p> {children} </p>
+			<p style={styles.header.shortDescription}> {children} </p>
 			{isOwner && (
 				<ModifyButton onModify={onModify} />
 			)}
@@ -242,7 +242,8 @@ const styles = {
 			lineHeight: '32px',
 			fontWeight: 500,
 			color: '#454d5d',
-			margin: 0
+			margin: 0,
+			whiteSpace: 'pre-wrap'
 		},
 		cardInfoDesc: {
 			fontSize: '14px',
@@ -275,6 +276,9 @@ const styles = {
 			fontSize: '32px',
 			fontWeight: 500,
 			textShadow: '0 0 12px #000'
+		},
+		shortDescription: {
+			whiteSpace: 'pre-wrap'
 		}
 	},
 	eventSection: {
@@ -299,7 +303,8 @@ const styles = {
 			lineHeight: '32px',
 			fontWeight: 500,
 			color: '#454d5d',
-			margin: '10px 0'
+			margin: '10px 0',
+			whiteSpace: 'pre-wrap'
 		}
 	}
 };

@@ -24,7 +24,7 @@ const EventPost = ({ title, shortDesc, image, date, address, link, bodyWidth }) 
 					</a>
 				</h2>
 				<div style={styles.event.eventLine} />
-				<p>{shortDesc}</p>
+				<p style={styles.event.eventShortDesc}>{shortDesc}</p>
     
 				<Grid gap={5} breakpoint={800} columns={2} style={styles.event.eventInfo}>
 					<Cell width={1}>
@@ -150,6 +150,9 @@ const styles = {
 		eventInfo: {
 			padding: '15px 0',
 			color: '#5A33A7'
+		},
+		eventShortDesc: {
+			whiteSpace: 'pre-wrap'
 		}
 	}
 };
