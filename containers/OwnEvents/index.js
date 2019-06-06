@@ -17,7 +17,6 @@ class OwnEvents extends Component{
 		dispatch(actions.SHOW_LOADER, { showLoader: true });
 
 		Firebase.getOwnEventList().then((eventList) => {
-			console.log(eventList);
 			this.setState({ eventList });
 		}).catch((err) => {
 			console.log(err);
