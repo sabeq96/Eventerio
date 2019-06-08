@@ -165,10 +165,12 @@ class AddModEvent extends Component {
 										{props.contactDetails}
 									</TextArea>
 								</EventInfo>
-								<EventOwnerDetails
-									avatarUrl={props.organizerAvatarUrl}
-									userName={props.organizer}
-								/>
+								{ props.organizerAvatarUrl && props.organizer && (
+									<EventOwnerDetails
+										avatarUrl={props.organizerAvatarUrl}
+										userName={props.organizer}
+									/>
+								)}
 							</CardBody>
 						</Card>
 					</Cell>
