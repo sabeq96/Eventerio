@@ -3,6 +3,7 @@
 import { Component, h } from 'preact';
 import { Icon } from 'preact-fluid';
 import Flatpickr from 'flatpickr';
+import _uniqueId from 'lodash/uniqueId';
 
 const themes = [
 	'dark',
@@ -31,7 +32,8 @@ class PreactFlatpickr extends Component {
     }
 
     constructor({ theme, ...props }) {
-    	super(props);
+		super(props);
+		this.inputId = _uniqueId('datePickerInput');
     	if (theme && !themes.includes(theme)) {
     		console.error(`the theme ${theme} is not valid. Valid themes: ${themes.join(', ')}`);
     	}
@@ -97,7 +99,7 @@ class PreactFlatpickr extends Component {
     	if (this.props.hasOwnProperty('value')) {
     		this.flatpickr.setDate(this.props.value, false);
     	}
-    }
+	}
 
     componentWillUnmount() {
     	this.flatpickr.destroy();
@@ -120,8 +122,10 @@ class PreactFlatpickr extends Component {
     		)
     		: (
     			<div>
-    				<input {...props} defaultValue={defaultValue}	ref={this.bindNode} />
-    				<Icon name="pen" size="small" style={{ marginLeft: 10 }} />
+    				<input {...props} defaultValue={defaultValue} ref={this.bindNode} id={this.inputId} />
+    				<label for={this.inputId}>
+						<Icon name="pen" size="small" style={{ marginLeft: 10 }} />
+					</label>
     			</div>
     		);
     }
