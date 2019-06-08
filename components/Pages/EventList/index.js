@@ -63,7 +63,7 @@ const EventPost = ({ title, shortDesc, image, date, address, link, bodyWidth }) 
 									/>
 								}
 							>
-							Zobacz
+							View
 							</Button>
 						</Link>
 					</Cell>
@@ -98,7 +98,7 @@ class EventList extends Component {
 	render(props, state) {
 		return (
 			<div className="container">
-				<h2> Lista eventow </h2>
+				<h2>Events list</h2>
 				{_map(props.eventList, (event, key) => (
 					<EventPost
 						key={key}
