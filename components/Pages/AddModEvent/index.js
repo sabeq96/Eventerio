@@ -4,8 +4,8 @@ import DatePicker from '../../DatePicker';
 import { Grid, Cell } from '../../Grid';
 import GoogleMap from '../../GoogleMap';
 
-const TextArea = ({ children, style, name, onChange }) => (
-	<textarea style={{ ...style, ...styles.textArea }} onChange={(e) => onChange(name, e.target.value)}>
+const TextArea = ({ children, style, name, placeholder, onChange }) => (
+	<textarea placeholder={placeholder} style={{ ...style, ...styles.textArea }} onChange={(e) => onChange(name, e.target.value)}>
 		{children}
 	</textarea>
 );
@@ -104,13 +104,13 @@ class AddModEvent extends Component {
 			<div className="container">
 				<EventHeader
 					bodyWidth={bodyWidth}
-					title={<TextArea style={styles.header.coverHeader} name="name" onChange={props.onChange}>
+					title={<TextArea style={styles.header.coverHeader} name="name" placeholder="Event name" onChange={props.onChange}>
 						{props.name}
 					</TextArea>}
 					image={props.file ? URL.createObjectURL(props.file) : props.photoUrl}
 					onChange={props.backgroundChange}
 				>
-					<TextArea style={{ color: 'white' }} name="shortDescription" onChange={props.onChange}>
+					<TextArea style={{ color: 'white' }} name="shortDescription" placeholder="Short description" onChange={props.onChange}>
 						{props.shortDescription}
 					</TextArea>
 				</EventHeader>
